@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-class LocalState {
+public class LocalState {
     public PlayerState PlayerState;
-    public List<BulletState> BulletStates;
+    public List<BulletState> BulletStates
+        = new List<BulletState>();
 }
