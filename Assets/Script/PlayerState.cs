@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerState  {
-	public enum Direction {
-		Up, Down, Left, Right
-	}
 	public Vector2 Position { get; private set; }
 	public Direction Orientation { get; private set; }
 	public float HP { get; private set; }

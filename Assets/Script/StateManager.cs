@@ -18,6 +18,41 @@ public class StateManager : MonoBehaviour {
 		GlobalState.PutLocalState(playerID, new LocalState());
 	}
 
+	public void AddBullet(int playerID, int bulletID, BulletState bulletState) {
+		GlobalState
+			.GetLocalState(playerID)
+			.BulletStates[bulletID] = bulletState;
+		// TODO init GameObject
+	}
+
+	public void ShootBullet(int playerID, int bulletID) {
+		var localState = GlobalState.GetLocalState(playerID);
+		var player = localState.PlayerState;
+		var bullet = new BulletState(
+			new Vector2(player.Position.x, player.Position.y),
+			player.Orientation
+		);
+		AddBullet(playerID, bulletID, bullet);
+	}
+
+	void RemoveBullet(int playerID, int bulletID) {
+		GlobalState
+			.GetLocalState(playerID)
+			.BulletStates.Remove(bulletID);
+		// removal of GameObject handled by itself
+	}
+
+	public void BulletHit(int playerID, int bulletID, int victimID) {
+		if (playerID == victimID) return;
+		var bullet = GlobalState
+			.GetLocalState(playerID)
+			.BulletStates[bulletID];
+		GlobalState
+			.GetLocalState(victimID)
+			.PlayerState.Damage(bullet.Damage);
+		RemoveBullet(playerID, bulletID);
+	}
+
 	// Use this for initialization
 	void Start () {
 	}

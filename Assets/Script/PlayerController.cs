@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Direction = PlayerState.Direction;
 
 public class PlayerController : MonoBehaviour {
 	public StateManager StateManager;
@@ -36,16 +35,13 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		float distance = Time.fixedDeltaTime * MoveSpeed;
-		if (Input.GetKey(KeyCode.W)) {
+		if (Input.GetKey(KeyCode.UpArrow)) {
 			State.move(Direction.Up, distance);
-		}
-		if (Input.GetKey(KeyCode.S)) {
+		} else if (Input.GetKey(KeyCode.DownArrow)) {
 			State.move(Direction.Down, distance);
-		}
-		if (Input.GetKey(KeyCode.A)) {
+		} else if (Input.GetKey(KeyCode.LeftArrow)) {
 			State.move(Direction.Left, distance);
-		}
-		if (Input.GetKey(KeyCode.D)) {
+		} else if (Input.GetKey(KeyCode.RightArrow)) {
 			State.move(Direction.Right, distance);
 		}
 
@@ -80,4 +76,5 @@ public class PlayerController : MonoBehaviour {
 			this.gameObject.SetActive(false);
 		}
 	}
+
 }
