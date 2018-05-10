@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
 
-public class StateSync {
+public class ClientNetwork {
 	public static Thread Thread = new Thread(mainLoop);
 	static GlobalState serverState;
 
@@ -11,6 +11,10 @@ public class StateSync {
 		lock (serverState) {
 			return serverState;
 		}
+	}
+
+	public static void ApplyStateChange(StateChange change) {
+		//
 	}
 
 	public static void SetLocalState(int playerId, LocalState s) {
