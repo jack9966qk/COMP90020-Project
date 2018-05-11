@@ -6,8 +6,7 @@ using UnityEngine.Networking;
 
 public class ClientNetwork {
 	public static GlobalState serverState;
-	public static StateChange changeToSend;
-
+	public static StateChange changeToSend = null;
 	static NetworkClient client = null;
 
 	public static void Start(string serverIp, int serverPort) {
@@ -19,10 +18,12 @@ public class ClientNetwork {
 		client.RegisterHandler(MsgType.Error, OnClientError);
 
 		// application messages
-		client.RegisterHandler(NetworkMessageType.NewGlobalState, OnNewGlobalState);
+		client.RegisterHandler(NetworkMsgType.NewGlobalState, OnNewGlobalState);
 
 		// connect
 		client.Connect(serverIp, serverPort);
+
+		Debug.Log("Connecting to server");
 	}
 
 	static void OnClientConnect(NetworkMessage msg) {
@@ -42,9 +43,12 @@ public class ClientNetwork {
 		serverState = msg.ReadMessage<GlobalState>();
 		Debug.Log("New global state received");
 
+		if (changeToSend == null) {
+			// TODO
+		}
 		// send state change
-		client.Send(NetworkMessageType.StateChangeSubmission, changeToSend);
+		client.Send(NetworkMsgType.StateChangeSubmission, changeToSend);
 		// reset state change TODO
-		// ...
+		changeToSend = null;
 	}
 }

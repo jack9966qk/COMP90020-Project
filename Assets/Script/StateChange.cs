@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Networking;
 
 public class StateChange : MessageBase {
-    // new possition
+    // new position
     public Vector2 NewPosition;
     // bullets created
     public HashSet<BulletState> BulletsCreated;
