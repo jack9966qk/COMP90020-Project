@@ -11,10 +11,10 @@ public class Bullet : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (State == null) return;
-		float x = State.Position.x;
-		float y = State.Position.y;
-		float z = transform.position.z;
-		this.transform.position.Set(x, y, z);
+		// if (State == null) return;
+		// float x = State.Position.x;
+		// float y = State.Position.y;
+		// float z = transform.position.z;
+		// this.transform.position.Set(x, y, z);
 	}
 }

@@ -1,17 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class PlayerState  {
 	public Vector2 Position { get; private set; }
 	public Direction Orientation { get; private set; }
 	public float HP { get; private set; }
-
-	public PlayerState(float x, float y, Direction orientation, float hp) {
-		Position = new Vector2(x, y);
-		Orientation = orientation;
-		HP = hp;
-	}
 
 	public bool IsAlive {
 		get {
@@ -44,5 +40,19 @@ public class PlayerState  {
 				break;
 		}
 	}
+
+    public void WriteToBuffer(NetworkWriter writer) {
+		writer.Write(Position);
+		DirectionIO.writeDirectionToBuffer(Orientation, writer);
+		writer.Write(HP);
+    }
+
+    public static PlayerState ReadFromBuffer(NetworkReader reader) {
+        return new PlayerState {
+			Position = reader.ReadVector2(),
+			Orientation = DirectionIO.readDirectionFromBuffer(reader),
+			HP = reader.ReadSingle()
+		};
+    }
 }
 
