@@ -2,16 +2,15 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 
-public class LocalState {
+public class LocalState : MessageBase {
     public PlayerState PlayerState;
 
-    public void WriteToBuffer(NetworkWriter writer) {
-		PlayerState.WriteToBuffer(writer);
+    public override void Serialize(NetworkWriter writer) {
+		PlayerState.Serialize(writer);
 	}
 
-	static public LocalState ReadFromBuffer(NetworkReader reader) {
-		return new LocalState {
-            PlayerState = PlayerState.ReadFromBuffer(reader)
-        };
+	public override void Deserialize(NetworkReader reader) {
+		PlayerState = new PlayerState();
+		PlayerState.Deserialize(reader);
 	}
 }

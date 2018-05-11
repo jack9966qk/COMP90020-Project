@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class BulletState {
+public class BulletState : MessageBase {
 	public Vector2 InitialPosition;
 	public Direction Direction;
 	public int SpawnTime;
@@ -35,17 +35,15 @@ public class BulletState {
 	// 	}
 	// }
 
-    public void WriteToBuffer(NetworkWriter writer) {
+    public override void Serialize(NetworkWriter writer) {
 		writer.Write(InitialPosition);
 		DirectionIO.writeDirectionToBuffer(Direction, writer);
 		writer.Write(SpawnTime);
     }
 
-    public static BulletState ReadFromBuffer(NetworkReader reader) {
-		return new BulletState {
-			InitialPosition = reader.ReadVector2(),
-			Direction = DirectionIO.readDirectionFromBuffer(reader),
-			SpawnTime = reader.ReadInt32()
-		};
+    public override void Deserialize(NetworkReader reader) {
+		InitialPosition = reader.ReadVector2();
+		Direction = DirectionIO.readDirectionFromBuffer(reader);
+		SpawnTime = reader.ReadInt32();
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 
-public class StateChange {
+public class StateChange : MessageBase {
     // new possition
     public Vector2 NewPosition;
     // bullets created
@@ -13,24 +13,24 @@ public class StateChange {
         BulletsCreated.UnionWith(other.BulletsCreated);
     }
 
-    public void WriteToBuffer(NetworkWriter writer) {
+    public override void Serialize(NetworkWriter writer) {
         writer.Write(NewPosition);
         writer.Write(BulletsCreated.Count);
         foreach (var bullet in BulletsCreated) {
-            bullet.WriteToBuffer(writer);
+            bullet.Serialize(writer);
         }
     }
 
-    public static StateChange ReadFromBuffer(NetworkReader reader) {
+    public override void Deserialize(NetworkReader reader) {
         var position = reader.ReadVector2();
         var bullets = new HashSet<BulletState>();
         var numBullet = reader.ReadInt32();
         for (var i = 0; i < numBullet; i++) {
-            bullets.Add(BulletState.ReadFromBuffer(reader));
+            var bullet = new BulletState();
+            bullet.Deserialize(reader);
+            bullets.Add(bullet);
         }
-        return new StateChange {
-            NewPosition = position,
-            BulletsCreated = bullets
-        };
+        NewPosition = position;
+        BulletsCreated = bullets;
     }
 }
