@@ -10,10 +10,12 @@ public class StateManager : MonoBehaviour {
 		return GlobalState;
 	}
 
+    // call when local player moves
 	public void Move(Vector2 pos) {
 		//...
 	}
 
+    // call when a bullet is shooted by local player
 	public void ShootBullet() {
 		//...
 	}
