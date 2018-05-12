@@ -46,7 +46,8 @@ public class ServerNetwork : MonoBehaviour {
 			StateChange.merge(change);
 		}
 
-		// check if all clients submitted
+		// check if all clients submitteds
+        // stretch goal - fix this ------------------------------------------------------------------
 		if (submitted.Count >= numPlayers) {
 			submitted.Clear();
 			StateChange = null;
