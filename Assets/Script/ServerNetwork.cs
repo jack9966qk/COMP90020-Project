@@ -39,12 +39,15 @@ public class ServerNetwork : MonoBehaviour {
 	}
 
 	static void OnStateChangeSubmission(NetworkMessage msg) {
+		Debug.Log("state change received");
 		var change = msg.ReadMessage<StateChange>();
 		if (StateChange == null) {
 			StateChange = change;
 		} else {
 			StateChange.merge(change);
 		}
+
+		submitted.Add(connToPlayerId[msg.conn.connectionId]);
 
 		// check if all clients submitteds
         // stretch goal - fix this ------------------------------------------------------------------
@@ -63,7 +66,7 @@ public class ServerNetwork : MonoBehaviour {
 		numPlayers += 1;
 
 		// start the game if all players connected
-		if (numPlayers >= 1) {
+		if (numPlayers >= 2) {
 			startGame();
 		}
 	}

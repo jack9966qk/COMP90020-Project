@@ -42,6 +42,11 @@ public class ClientNetwork : MonoBehaviour {
 		Debug.Log("Error");
 	}
 
+	public static void UpdateStateChange(StateChange stateChange) {
+		// TODO...
+		changeToSend.merge(stateChange);
+	}
+
 	static void OnNewGlobalState(NetworkMessage msg) {
 		// receive global state
 		serverState = msg.ReadMessage<GlobalState>();

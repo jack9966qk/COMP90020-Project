@@ -18,6 +18,15 @@ public class StateManager : MonoBehaviour {
 		//...
 	}
 
+	public void ApplyStateChange(StateChange stateChange) {
+		// TODO...
+		ClientNetwork.UpdateStateChange(stateChange);
+	}
+
+	public void UpdateServerState(GlobalState serverState) {
+		// TODO..
+	}
+
 	// Use this for initialization
 	void Start () {
 	}
