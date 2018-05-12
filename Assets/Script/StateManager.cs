@@ -29,7 +29,7 @@ public class StateManager : MonoBehaviour {
 		ClientNetwork.UpdateStateChange(stateChange);
 	}
 
-	public void UpdateServerState(GlobalState serverState) {
+	public void UpdateServerState(GlobalState serverState, Vector2 logictime) {
 		// TODO..
 	}
 

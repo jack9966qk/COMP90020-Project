@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ServerLogic : MonoBehaviour {
-	GlobalState GlobalState;
+	public GlobalState GlobalState;
 	public void ApplyStateChange(Dictionary<int, StateChange> stateChanges) {
 		foreach (var playerId in stateChanges.Keys) {
 			var change = stateChanges[playerId];

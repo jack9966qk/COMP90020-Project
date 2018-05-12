@@ -6,9 +6,10 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.NetworkSystem;
 
 public class ClientNetwork : MonoBehaviour {
-	static GlobalState serverState;
 	static StateChange changeToSend = null;
 	static NetworkClient client = null;
+	static StateManager StateManager;
+	static Vector2 clientLogicTime;
 
 	static int? LocalPlayerId = null;
 
@@ -45,8 +46,9 @@ public class ClientNetwork : MonoBehaviour {
 		Debug.Log("Error");
 	}
 
-	public static void UpdateStateChange(StateChange stateChange) {
+	public static void UpdateStateChange(StateChange stateChange, Vector2 logicTime) {
 		changeToSend.merge(stateChange);
+		clientLogicTime = logicTime;
 	}
 
 	static void OnPlayerIdAssignment(NetworkMessage msg) {
@@ -56,7 +58,10 @@ public class ClientNetwork : MonoBehaviour {
 
 	static void OnNewGlobalState(NetworkMessage msg) {
 		// receive global state
-		serverState = msg.ReadMessage<GlobalState>();
+		var globalStateMsg = msg.ReadMessage<GlobalStateMessage>();
+		StateManager.UpdateServerState(
+			globalStateMsg.GlobalState,
+			globalStateMsg.LogicTime);
 		Debug.Log("New global state received");
 
         // no change
@@ -64,8 +69,14 @@ public class ClientNetwork : MonoBehaviour {
 			changeToSend = new StateChange();
 		}
 		// send state change
-		client.Send(NetworkMsgType.StateChangeSubmission, changeToSend);
-		// reset state change TODO
+		client.Send(
+			NetworkMsgType.StateChangeSubmission,
+			new StateChangeMessage {
+				StateChange = changeToSend,
+				LogicTime = clientLogicTime
+			}
+		);
+		// reset state change
 		changeToSend = null;
 	}
 }
