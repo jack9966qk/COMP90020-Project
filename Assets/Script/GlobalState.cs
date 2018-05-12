@@ -70,7 +70,7 @@ public class GlobalState : MessageBase {
 
 		var bullets = new Dictionary<int, BulletState>();
 		var numBullet = reader.ReadInt32();
-		for (var i = 0; i < numLocal; i++) {
+		for (var i = 0; i < numBullet; i++) {
 			var id = reader.ReadInt32();
 			var state = new BulletState();
 			state.Deserialize(reader);

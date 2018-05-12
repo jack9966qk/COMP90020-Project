@@ -14,9 +14,9 @@ public class ServerNetwork : MonoBehaviour {
 		// GlobalState = initialState;
 		
 		// system messages
-		NetworkServer.RegisterHandler(MsgType.Connect, OnServerConnect);
-		NetworkServer.RegisterHandler(MsgType.Disconnect, OnServerDisconnect);
-		NetworkServer.RegisterHandler(MsgType.Error, OnServerError);
+		NetworkServer.RegisterHandler(MsgType.Connect, OnClientConnect);
+		NetworkServer.RegisterHandler(MsgType.Disconnect, OnClientDisconnect);
+		NetworkServer.RegisterHandler(MsgType.Error, OnClientError);
 
 		// application messages
 		NetworkServer.RegisterHandler(NetworkMsgType.StateChangeSubmission, OnStateChangeSubmission);
@@ -51,25 +51,28 @@ public class ServerNetwork : MonoBehaviour {
 		if (submitted.Count >= numPlayers) {
 			submitted.Clear();
 			StateChange = null;
+			Debug.Log("Send new global state");
 			NetworkServer.SendToAll(NetworkMsgType.NewGlobalState, GlobalState);
 		}
 	}
 
-	static void OnServerConnect(NetworkMessage msg) {
+	static void OnClientConnect(NetworkMessage msg) {
 		Debug.Log("Connected");
 		// associate connected client to player ID
 		connToPlayerId[msg.conn.connectionId] = numPlayers;
 		numPlayers += 1;
 
 		// start the game if all players connected
-		startGame();
+		if (numPlayers >= 1) {
+			startGame();
+		}
 	}
 
-	static void OnServerDisconnect(NetworkMessage msg) {
+	static void OnClientDisconnect(NetworkMessage msg) {
 		Debug.Log("Disconnected");
 	}
 
-	static void OnServerError(NetworkMessage msg) {
+	static void OnClientError(NetworkMessage msg) {
 		Debug.Log("Error");
 	}
 }
