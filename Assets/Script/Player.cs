@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-	public float HP;
+    public PlayerState State;
 	// Use this for initialization
 	void Start () {
 		
@@ -11,13 +11,29 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		// TODO change below to fit updated StateManager
-		// if (State == null) return;
-		// HP = State.HP;
-		// float x = State.Position.x;
-		// float y = State.Position.y;
-		// float z = transform.position.z;
-		// this.transform.position.Set(x, y, z);
-		// // TODO gameobject orientation
-	}
+        if (State == null) return;
+        this.transform.position = State.Position;
+        switch (State.Orientation)
+        {
+            case Direction.Up:
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case Direction.Down:
+                transform.rotation = Quaternion.Euler(0, 0, 180);
+                break;
+            case Direction.Left:
+                transform.rotation = Quaternion.Euler(0, 0, 90);
+                break;
+            case Direction.Right:
+                transform.rotation = Quaternion.Euler(0, 0, 270);
+                break;
+            default:
+                break;
+        }
+
+        if (!State.IsAlive)
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
 }

@@ -10,6 +10,7 @@ public class StateManager : MonoBehaviour {
 		return GlobalState;
 	}
 
+    // call when local player moves
 	public void Move(Vector2 pos) {
         StateChange update = new StateChange();
         update.NewPosition = pos;
