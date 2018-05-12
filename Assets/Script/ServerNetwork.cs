@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
 using UnityEngine.Networking;
+using UnityEngine.Networking.NetworkSystem;
 
 public class ServerNetwork : MonoBehaviour {
 	public static GlobalState GlobalState;
-	public static StateChange StateChange = null;
+	static Dictionary<int, StateChange> stateChanges
+		= new Dictionary<int, StateChange>();
 	static int numPlayers = 0;
 	static HashSet<int> submitted = new HashSet<int>();
 	static Dictionary<int, int> connToPlayerId = new Dictionary<int, int>();
@@ -19,7 +21,9 @@ public class ServerNetwork : MonoBehaviour {
 		NetworkServer.RegisterHandler(MsgType.Error, OnClientError);
 
 		// application messages
-		NetworkServer.RegisterHandler(NetworkMsgType.StateChangeSubmission, OnStateChangeSubmission);
+		NetworkServer.RegisterHandler(
+			NetworkMsgType.StateChangeSubmission,
+			OnStateChangeSubmission);
 
 		// start listening
 		NetworkServer.Listen(serverPort);
@@ -35,25 +39,36 @@ public class ServerNetwork : MonoBehaviour {
 		// start the game by broadcasting global state for the first time
 		Debug.Log("Start game");
 		GlobalState = GlobalState.Initialise(numPlayers);
+
+		// for each client, send player id
+		foreach (var connId in connToPlayerId.Keys) {
+			var msg = new IntegerMessage();
+			msg.value = connToPlayerId[connId];
+			NetworkServer.SendToClient(connId, NetworkMsgType.AssignPlayerId, msg);
+		}
+		
+		// broadcast global states
 		NetworkServer.SendToAll(NetworkMsgType.NewGlobalState, GlobalState);
 	}
 
 	static void OnStateChangeSubmission(NetworkMessage msg) {
 		Debug.Log("state change received");
 		var change = msg.ReadMessage<StateChange>();
-		if (StateChange == null) {
-			StateChange = change;
+		var connId = msg.conn.connectionId;
+		if (!stateChanges.ContainsKey(connId)) {
+			stateChanges[connId] = change;
 		} else {
-			StateChange.merge(change);
+			stateChanges[connId].merge(change);
 		}
 
 		submitted.Add(connToPlayerId[msg.conn.connectionId]);
 
 		// check if all clients submitteds
-        // stretch goal - fix this ------------------------------------------------------------------
+        // TODO stretch goal - fix this ---------------
 		if (submitted.Count >= numPlayers) {
 			submitted.Clear();
-			StateChange = null;
+			stateChanges.Clear();
+			// TODO Call serverlogic to update global game state
 			Debug.Log("Send new global state");
 			NetworkServer.SendToAll(NetworkMsgType.NewGlobalState, GlobalState);
 		}

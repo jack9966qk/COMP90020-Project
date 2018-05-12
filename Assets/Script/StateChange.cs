@@ -10,6 +10,7 @@ public class StateChange : MessageBase {
     public HashSet<BulletState> BulletsCreated = new HashSet<BulletState>();
 
     public void merge(StateChange other) {
+        HasChange = HasChange || other.HasChange;
         NewPosition = other.NewPosition;
         BulletsCreated.UnionWith(other.BulletsCreated);
     }

@@ -5,23 +5,28 @@ using UnityEngine;
 public class StateManager : MonoBehaviour {
 	GlobalState GlobalState
 		= new GlobalState();
-
+    Vector2 logictime = new Vector2(0, 0); //TO-DO
 	public GlobalState GetApproxState() {
 		return GlobalState;
 	}
 
     // call when local player moves
 	public void Move(Vector2 pos) {
-		//...
+        StateChange update = new StateChange();
+        update.NewPosition = pos;
+        ApplyStateChange(update);
 	}
 
-    // call when a bullet is shooted by local player
-	public void ShootBullet() {
-		//...
-	}
+	public void ShootBullet(BulletState bullet) {
+        StateChange update = new StateChange();
+        update.BulletsCreated.Add(bullet);
+        ApplyStateChange(update);
+    }
 
 	public void ApplyStateChange(StateChange stateChange) {
-		// TODO...
+		//apply the state change to local
+        
+        //send the state change to server
 		ClientNetwork.UpdateStateChange(stateChange);
 	}
 
@@ -31,6 +36,7 @@ public class StateManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 	}
 	
 	// Update is called once per frame

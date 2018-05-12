@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
 using UnityEngine.Networking;
+using UnityEngine.Networking.NetworkSystem;
 
 public class ClientNetwork : MonoBehaviour {
-	public static GlobalState serverState;
-	public static StateChange changeToSend = null;
+	static GlobalState serverState;
+	static StateChange changeToSend = null;
 	static NetworkClient client = null;
+
+	static int? LocalPlayerId = null;
 
 	public static void StartClient(string serverIp, int serverPort) {
 		client = new NetworkClient();
@@ -43,8 +46,12 @@ public class ClientNetwork : MonoBehaviour {
 	}
 
 	public static void UpdateStateChange(StateChange stateChange) {
-		// TODO...
 		changeToSend.merge(stateChange);
+	}
+
+	static void OnPlayerIdAssignment(NetworkMessage msg) {
+		Debug.Log("Player ID received");
+		LocalPlayerId = msg.ReadMessage<IntegerMessage>().value;
 	}
 
 	static void OnNewGlobalState(NetworkMessage msg) {
