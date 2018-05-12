@@ -48,7 +48,7 @@ public class ClientNetwork : MonoBehaviour {
 		Debug.Log("New global state received");
 
 		if (changeToSend == null) {
-			// TODO
+			changeToSend = new StateChange();
 		}
 		// send state change
 		client.Send(NetworkMsgType.StateChangeSubmission, changeToSend);

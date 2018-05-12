@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine.Networking;
 
 public class StateChange : MessageBase {
+    public bool HasChange = false;
     // new position
-    public Vector2 NewPosition;
+    public Vector2 NewPosition = new Vector2();
     // bullets created
-    public HashSet<BulletState> BulletsCreated;
+    public HashSet<BulletState> BulletsCreated = new HashSet<BulletState>();
 
     public void merge(StateChange other) {
         NewPosition = other.NewPosition;
@@ -14,6 +15,7 @@ public class StateChange : MessageBase {
     }
 
     public override void Serialize(NetworkWriter writer) {
+        writer.Write(HasChange);
         writer.Write(NewPosition);
         writer.Write(BulletsCreated.Count);
         foreach (var bullet in BulletsCreated) {
@@ -22,6 +24,7 @@ public class StateChange : MessageBase {
     }
 
     public override void Deserialize(NetworkReader reader) {
+        var hasChange = reader.ReadBoolean();
         var position = reader.ReadVector2();
         var bullets = new HashSet<BulletState>();
         var numBullet = reader.ReadInt32();
@@ -30,6 +33,7 @@ public class StateChange : MessageBase {
             bullet.Deserialize(reader);
             bullets.Add(bullet);
         }
+        HasChange = hasChange;
         NewPosition = position;
         BulletsCreated = bullets;
     }
