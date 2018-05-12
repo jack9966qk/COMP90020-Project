@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletCollision : MonoBehaviour {
+    public ServerLogic serverLogic;
 
 	// Use this for initialization
 	void Start () {
@@ -18,13 +19,9 @@ public class BulletCollision : MonoBehaviour {
     {
         if (collision.gameObject.tag.Equals("Player"))
         {
-            collision.gameObject.GetComponent<Player>().State.HP -= Constants.BulletDamage;
-            Destroy(collision.gameObject);
+            int playerID = collision.gameObject.GetComponent<Player>().State.PlayerID;
+            int bulletID = transform.parent.gameObject.GetComponent<Bullet>().State.BulletID;
+            serverLogic.OnCollision(bulletID, playerID);
         }
-        else
-        {
-            Destroy(collision.gameObject);
-        }
-        Destroy(transform.parent.gameObject);
     }
 }

@@ -8,6 +8,7 @@ public class PlayerState : MessageBase {
 	public Vector2 Position;
 	public Direction Orientation;
 	public float HP;
+    public int PlayerID;
 
 	public bool IsAlive {
 		get {

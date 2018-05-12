@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour {
         State.Position = this.transform.position;
         State.Orientation = Direction.Up;
         State.HP = Constants.PlayerHP;
+        
     }
 	
 	// Update is called once per frame
@@ -24,18 +25,22 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKey(KeyCode.UpArrow))
         {
             State.move(Direction.Up, distance);
+            StateManager.Move(State.Position);
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
             State.move(Direction.Down, distance);
+            StateManager.Move(State.Position);
         }
         else if (Input.GetKey(KeyCode.LeftArrow))
         {
             State.move(Direction.Left, distance);
+            StateManager.Move(State.Position);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             State.move(Direction.Right, distance);
+            StateManager.Move(State.Position);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -44,6 +49,7 @@ public class PlayerController : MonoBehaviour {
             bullet.GetComponent<Bullet>().State.Direction = State.Orientation;
             bullet.GetComponent<Bullet>().State.SpawnTime = Time.time;
             bullet.GetComponent<Bullet>().State.InitialPosition = InitialBulletPosition();
+            StateManager.ShootBullet(bullet.GetComponent<Bullet>().State);
         }
 
         // update GameObject
