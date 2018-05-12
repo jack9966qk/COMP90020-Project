@@ -20,6 +20,10 @@ public class GlobalState : MessageBase {
 		BulletStates[bulletID] = state;
 	}
 
+	public void RemoveBulletState(int bulletID) {
+		BulletStates.Remove(bulletID);
+	}
+
 	public LocalState GetLocalState(int playerID) {
 		return LocalStates[playerID];
 	}
