@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class PlayerState : MessageBase {
-	public Vector2 Position { get; private set; }
-	public Direction Orientation { get; private set; }
-	public float HP { get; private set; }
+	public Vector2 Position;
+	public Direction Orientation;
+	public float HP;
 
 	public bool IsAlive {
 		get {

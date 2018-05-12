@@ -4,14 +4,14 @@ using UnityEngine;
 using System.Threading;
 using UnityEngine.Networking;
 
-public class ServerNetwork {
+public class ServerNetwork : MonoBehaviour {
 	public static GlobalState GlobalState;
 	public static StateChange StateChange = null;
 	static int numPlayers = 0;
 	static HashSet<int> submitted = new HashSet<int>();
 	static Dictionary<int, int> connToPlayerId = new Dictionary<int, int>();
-	public static void Start(int serverPort, GlobalState initialState) {
-		GlobalState = initialState;
+	public static void StartServer(int serverPort) {
+		// GlobalState = initialState;
 		
 		// system messages
 		NetworkServer.RegisterHandler(MsgType.Connect, OnServerConnect);
@@ -27,9 +27,14 @@ public class ServerNetwork {
 		Debug.Log("Server listening for connections");
 	}
 
+	public void Start() {
+		StartServer(Constants.Port);
+	}
+
 	static void startGame() {
 		// start the game by broadcasting global state for the first time
 		Debug.Log("Start game");
+		GlobalState = GlobalState.Initialise(numPlayers);
 		NetworkServer.SendToAll(NetworkMsgType.NewGlobalState, GlobalState);
 	}
 

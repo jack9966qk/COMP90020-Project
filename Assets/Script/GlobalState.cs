@@ -9,7 +9,8 @@ public class GlobalState : MessageBase {
 		= new Dictionary<int, LocalState>();
 
 	// bullet states shared globally
-	Dictionary<int, BulletState> BulletStates;
+	Dictionary<int, BulletState> BulletStates
+		= new Dictionary<int, BulletState>();
 
 	public BulletState GetBulletState(int bulletID) {
 		return BulletStates[bulletID];
@@ -25,6 +26,23 @@ public class GlobalState : MessageBase {
 
 	public void PutLocalState(int playerID, LocalState state) {
 		LocalStates[playerID] = state;
+	}
+
+	public static GlobalState Initialise(int numPlayers) {
+		var localStates = new Dictionary<int, LocalState>();
+		for (var i = 0; i < numPlayers; i++) {
+			localStates[i] = new LocalState {
+				PlayerState = new PlayerState {
+					Position = new Vector2(0, 0),
+					Orientation = Direction.Up,
+					HP = 100f
+				}
+			};
+		}
+		return new GlobalState {
+			LocalStates = localStates,
+			BulletStates = new Dictionary<int, BulletState>()
+		};
 	}
 
 	public override void Serialize(NetworkWriter writer) {

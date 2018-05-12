@@ -4,12 +4,12 @@ using UnityEngine;
 using System.Threading;
 using UnityEngine.Networking;
 
-public class ClientNetwork {
+public class ClientNetwork : MonoBehaviour {
 	public static GlobalState serverState;
 	public static StateChange changeToSend = null;
 	static NetworkClient client = null;
 
-	public static void Start(string serverIp, int serverPort) {
+	public static void StartClient(string serverIp, int serverPort) {
 		client = new NetworkClient();
 
 		// system messages
@@ -24,6 +24,10 @@ public class ClientNetwork {
 		client.Connect(serverIp, serverPort);
 
 		Debug.Log("Connecting to server");
+	}
+
+	public void Start() {
+		StartClient("127.0.0.1", Constants.Port);	
 	}
 
 	static void OnClientConnect(NetworkMessage msg) {
