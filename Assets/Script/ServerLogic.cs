@@ -16,6 +16,8 @@ public class ServerLogic : MonoBehaviour {
 					HP = 100f
 				}
 			};
+			var player = Instantiate(PlayerPrefab, new Vector3(), new Quaternion());
+			player.GetComponent<Player>().State = localStates[i].PlayerState;
 		}
 		GlobalState = new GlobalState {
 			LocalStates = localStates,
