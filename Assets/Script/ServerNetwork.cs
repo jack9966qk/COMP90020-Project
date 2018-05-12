@@ -6,16 +6,16 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.NetworkSystem;
 
 public class ServerNetwork : MonoBehaviour {
-	static Dictionary<int, StateChange> stateChanges
+	Dictionary<int, StateChange> stateChanges
 		= new Dictionary<int, StateChange>();
-	static int numPlayers = 0;
-	static HashSet<int> submitted = new HashSet<int>();
-	static Dictionary<int, int> connToPlayerId = new Dictionary<int, int>();
-	static Dictionary<int, int> clientTimes = new Dictionary<int, int>();
-	static int serverTime = 0;
+	int numPlayers = 0;
+	HashSet<int> submitted = new HashSet<int>();
+	Dictionary<int, int> connToPlayerId = new Dictionary<int, int>();
+	Dictionary<int, int> clientTimes = new Dictionary<int, int>();
+	int serverTime = 0;
 
-	public static ServerLogic ServerLogic;
-	public static void StartServer(int serverPort) {
+	public ServerLogic ServerLogic;
+	public void StartServer(int serverPort) {
 		// GlobalState = initialState;
 		
 		// system messages
@@ -38,10 +38,10 @@ public class ServerNetwork : MonoBehaviour {
 		StartServer(Constants.Port);
 	}
 
-	static void startGame() {
+	void startGame() {
 		// start the game by broadcasting global state for the first time
 		Debug.Log("Start game");
-		ServerLogic.GlobalState = GlobalState.Initialise(numPlayers);
+		ServerLogic.Initialise(numPlayers);
 
 		// for each client, send player id
 		foreach (var connId in connToPlayerId.Keys) {
@@ -53,7 +53,7 @@ public class ServerNetwork : MonoBehaviour {
 		broadcastGlobalState();
 	}
 
-	static void broadcastGlobalState() {
+	void broadcastGlobalState() {
 		serverTime += 1;
 
 		foreach (var connId in connToPlayerId.Keys) {
@@ -69,7 +69,7 @@ public class ServerNetwork : MonoBehaviour {
 		}
 	}
 
-	static void OnStateChangeSubmission(NetworkMessage msg) {
+	void OnStateChangeSubmission(NetworkMessage msg) {
 		Debug.Log("state change received");
 		var stateChangeMsg = msg.ReadMessage<StateChangeMessage>();
 		var change = stateChangeMsg.StateChange;
@@ -97,7 +97,7 @@ public class ServerNetwork : MonoBehaviour {
 		}
 	}
 
-	static void OnClientConnect(NetworkMessage msg) {
+	void OnClientConnect(NetworkMessage msg) {
 		Debug.Log("Connected");
 		// associate connected client to player ID
 		connToPlayerId[msg.conn.connectionId] = numPlayers;
@@ -111,11 +111,11 @@ public class ServerNetwork : MonoBehaviour {
 		}
 	}
 
-	static void OnClientDisconnect(NetworkMessage msg) {
+	void OnClientDisconnect(NetworkMessage msg) {
 		Debug.Log("Disconnected");
 	}
 
-	static void OnClientError(NetworkMessage msg) {
+	void OnClientError(NetworkMessage msg) {
 		Debug.Log("Error");
 	}
 }

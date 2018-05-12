@@ -5,49 +5,12 @@ using UnityEngine.Networking;
 
 public class GlobalState : MessageBase {
 	// local state for each player
-	Dictionary<int, LocalState> LocalStates
+	public Dictionary<int, LocalState> LocalStates
 		= new Dictionary<int, LocalState>();
 
 	// bullet states shared globally
-	Dictionary<int, BulletState> BulletStates
+	public Dictionary<int, BulletState> BulletStates
 		= new Dictionary<int, BulletState>();
-
-	public BulletState GetBulletState(int bulletID) {
-		return BulletStates[bulletID];
-	}
-
-	public void PutBulletState(int bulletID, BulletState state) {
-		BulletStates[bulletID] = state;
-	}
-
-	public void RemoveBulletState(int bulletID) {
-		BulletStates.Remove(bulletID);
-	}
-
-	public LocalState GetLocalState(int playerID) {
-		return LocalStates[playerID];
-	}
-
-	public void PutLocalState(int playerID, LocalState state) {
-		LocalStates[playerID] = state;
-	}
-
-	public static GlobalState Initialise(int numPlayers) {
-		var localStates = new Dictionary<int, LocalState>();
-		for (var i = 0; i < numPlayers; i++) {
-			localStates[i] = new LocalState {
-				PlayerState = new PlayerState {
-					Position = new Vector2(0, 0),
-					Orientation = Direction.Up,
-					HP = 100f
-				}
-			};
-		}
-		return new GlobalState {
-			LocalStates = localStates,
-			BulletStates = new Dictionary<int, BulletState>()
-		};
-	}
 
 	public override void Serialize(NetworkWriter writer) {
 		writer.Write(LocalStates.Count);

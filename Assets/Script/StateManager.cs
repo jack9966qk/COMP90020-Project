@@ -27,7 +27,7 @@ public class StateManager : MonoBehaviour {
 		//apply the state change to local
         
         //send the state change to server
-		ClientNetwork.UpdateStateChange(stateChange);
+		// ClientNetwork.UpdateStateChange(stateChange);
 	}
 
 	public void UpdateServerState(GlobalState serverState, Vector2 logictime) {
