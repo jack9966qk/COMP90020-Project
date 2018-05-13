@@ -5,11 +5,10 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
     public StateManager StateManager;
     public GameObject RemotePlayerPrefab;
-    public GameObject PlayerPrefab;
     public GameObject BulletPrefab;
 
-    public Dictionary<int, BulletState> BulletDict;
-    public Dictionary<int, PlayerState> PlayerDict;
+    public Dictionary<int, BulletState> BulletDict = new Dictionary<int, BulletState>();
+    public Dictionary<int, PlayerState> PlayerDict = new Dictionary<int, PlayerState>();
 
 	// Use this for initialization
 	void Start () {
