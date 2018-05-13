@@ -19,9 +19,7 @@ public class StateManager : MonoBehaviour {
         StateChange update = new StateChange {
             HasChange = true,
             NewPosition = pos,
-            NewOrientation - orientation
-            
-
+            NewOrientation = orientation
         };
         //update local state
         var playerState = GlobalState.LocalStates[PID.Value].PlayerState;
