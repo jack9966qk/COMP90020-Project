@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 public class BulletState : MessageBase {
 	public Vector2 Position;
 	public Direction Direction;
-    public int BulletID;
+    public string BulletID;
 
     public override void Serialize(NetworkWriter writer) {
 		writer.Write(Position);
