@@ -8,6 +8,7 @@ public class StateManager : MonoBehaviour {
     Vector2 logictime = new Vector2(0, 0); //TO-DO
     public GameObject PlayerPrefab;
     public GameObject BulletPrefab;
+    public GameController GameController;
     private static int? PID = null;
 	public GlobalState GetApproxState() {
 		return GlobalState;
