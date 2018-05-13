@@ -33,6 +33,7 @@ public class ServerLogic : MonoBehaviour {
 				// Init the bullets
 				var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
 				bullet.GetComponent<Bullet>().State = bulletState;
+				bullet.GetComponent<BulletCollision>().serverLogic = this;
 			}
 			// update player position
 			var playerState = GlobalState.LocalStates[playerId].PlayerState;
