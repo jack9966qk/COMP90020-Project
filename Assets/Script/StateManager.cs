@@ -21,11 +21,8 @@ public class StateManager : MonoBehaviour {
         SetPID();
         StateChange update = new StateChange
         {
-            HasChange = true,
             NewPosition = pos,
             NewOrientation = orientation
-            
-
         };
         //update local state
         var playerState = GlobalState.LocalStates[PID.Value].PlayerState;
@@ -40,7 +37,6 @@ public class StateManager : MonoBehaviour {
         bulletsCreated.Add(bullet);
         StateChange update = new StateChange
         {
-            HasChange = true,
             BulletsCreated = bulletsCreated
         };
         update.BulletsCreated.Add(bullet);

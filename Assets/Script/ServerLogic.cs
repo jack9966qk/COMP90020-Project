@@ -35,8 +35,6 @@ public class ServerLogic : MonoBehaviour {
 		Debug.Log(stateChanges.Count);
 		foreach (var playerId in stateChanges.Keys) {
 			var change = stateChanges[playerId];
-			Debug.Log(change.HasChange);
-			if (!change.HasChange) continue;
 			// add bullets
 			foreach (BulletState bulletState in change.BulletsCreated) {
 				Debug.Log(bulletState.BulletID);
@@ -53,8 +51,12 @@ public class ServerLogic : MonoBehaviour {
 			// update player position
 			var playerState = GlobalState.LocalStates[playerId].PlayerState;
 			Debug.Log(change.NewPosition);
-			playerState.Position = change.NewPosition;
-			playerState.Orientation = change.NewOrientation;
+			if (change.NewPosition.HasValue) {
+				playerState.Position = change.NewPosition.Value;
+			}
+			if (change.NewOrientation.HasValue) {
+				playerState.Orientation = change.NewOrientation.Value;
+			}
 			players[playerId].State = playerState;
 		}
 	}
