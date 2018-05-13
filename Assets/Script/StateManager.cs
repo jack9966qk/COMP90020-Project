@@ -10,16 +10,21 @@ public class StateManager : MonoBehaviour {
     public GameController GameController;
     private static int? PID = null;
 	public GlobalState GetApproxState() {
+        Debug.Log("GlobalState: " + GlobalState.LocalStates[(int)PID].PlayerState.Position);
 		return GlobalState;
 	}
 
     // call when local player moves
+        
 	public void Move(Vector2 pos, Direction orientation) {
+        Debug.Log(pos.x + ";" + pos.y);
         SetPID();
-        StateChange update = new StateChange {
+        StateChange update = new StateChange
+        {
             HasChange = true,
             NewPosition = pos,
             NewOrientation = orientation
+
         };
         //update local state
         var playerState = GlobalState.LocalStates[PID.Value].PlayerState;
@@ -32,7 +37,8 @@ public class StateManager : MonoBehaviour {
         SetPID();
         var bulletsCreated = new HashSet<BulletState>();
         bulletsCreated.Add(bullet);
-        StateChange update = new StateChange {
+        StateChange update = new StateChange
+        {
             HasChange = true,
             BulletsCreated = bulletsCreated
         };
@@ -45,6 +51,7 @@ public class StateManager : MonoBehaviour {
 	public void ApplyStateChange(StateChange stateChange) {
         //send the state change to server
         logictime.Set(logictime.x + 1, logictime.y);
+        Debug.Log("StateManager ApplyStateChange: " + stateChange.NewPosition);
         ClientNetwork.UpdateStateChange(stateChange,logictime);
 	}
 

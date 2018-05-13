@@ -32,22 +32,29 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetKey(KeyCode.UpArrow))
             {
                 //State.move(Direction.Up, distance);
-                StateManager.Move(State.Position);
+                Vector2 pos = move(Direction.Up, distance);
+                StateManager.Move(pos);
+                Debug.Log(pos);
             }
             else if (Input.GetKey(KeyCode.DownArrow))
             {
                 //State.move(Direction.Down, distance);
-                StateManager.Move(State.Position);
+                Vector2 pos = move(Direction.Down, distance);
+                StateManager.Move(pos);
+                Debug.Log(pos);
             }
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
                 //State.move(Direction.Left, distance);
-                StateManager.Move(State.Position);
+                Vector2 pos = move(Direction.Left, distance);
+                StateManager.Move(pos);
+                Debug.Log(pos);
             }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
-                //State.move(Direction.Right, distance);
-                StateManager.Move(State.Position);
+                Vector2 pos = move(Direction.Right, distance);
+                StateManager.Move(pos);
+                Debug.Log(pos);
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -123,6 +130,32 @@ public class PlayerController : MonoBehaviour {
                 break;
         }
         return bulletPosition;
+    }
+
+    public Vector2 move(Direction direction, float distance)
+    {
+        float x = this.State.Position.x;
+        float y = this.State.Position.y;
+        Vector2 pos = new Vector2();
+        switch (direction)
+        {
+            case Direction.Up:
+                pos = new Vector2(x, y + distance);
+                break;
+            case Direction.Down:
+                pos = new Vector2(x, y - distance);
+                break;
+            case Direction.Left:
+                pos = new Vector2(x - distance, y);
+                break;
+            case Direction.Right:
+                pos = new Vector2(x + distance, y);
+                break;
+            default:
+                break;
+        }
+        return pos;
+
     }
 
 }
