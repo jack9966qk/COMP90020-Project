@@ -26,9 +26,9 @@ public class Bullet : MonoBehaviour {
 
     public void Move()
     {
-        float distance = Time.fixedDeltaTime * Constants.BulletSpeed;
-        float x = this.transform.position.x;
-        float y = this.transform.position.y;
+        float distance = (Time.time-State.SpawnTime) * Constants.BulletSpeed;
+        float x = this.State.InitialPosition.x;
+        float y = this.State.InitialPosition.y;
         switch (State.Direction)
         {
             case Direction.Up:

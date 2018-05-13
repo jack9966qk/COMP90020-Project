@@ -10,7 +10,7 @@ public class StateManager : MonoBehaviour {
     public GameController GameController;
     private static int? PID = null;
 	public GlobalState GetApproxState() {
-        Debug.Log("GlobalState: " + GlobalState.LocalStates[(int)PID].PlayerState.Position);
+        //Debug.Log("GlobalState: " + GlobalState.LocalStates[(int)PID].PlayerState.Position);
 		return GlobalState;
 	}
 

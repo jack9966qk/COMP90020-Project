@@ -108,10 +108,10 @@ public class PlayerController : MonoBehaviour {
 
     public Vector2 InitialBulletPosition()
     {
-        Vector2 bulletPosition = this.transform.position;
+        Vector2 bulletPosition = State.Position;
         float distance = 1;
-        float x = this.transform.position.x;
-        float y = this.transform.position.y;
+        float x = this.State.Position.x;
+        float y = this.State.Position.y;
         switch (this.State.Orientation)
         {
             case Direction.Up:
