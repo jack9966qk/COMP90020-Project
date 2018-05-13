@@ -23,6 +23,7 @@ public class ClientNetwork : MonoBehaviour {
 
 		// application messages
 		client.RegisterHandler(NetworkMsgType.NewGlobalState, OnNewGlobalState);
+		client.RegisterHandler(NetworkMsgType.AssignPlayerId, OnPlayerIdAssignment);
 
 		// connect
 		client.Connect(serverIp, serverPort);
