@@ -16,8 +16,10 @@ public class StateManager : MonoBehaviour {
     // call when local player moves
 	public void Move(Vector2 pos) {
         SetPID();
-        StateChange update = new StateChange();
-        update.NewPosition = pos;
+        StateChange update = new StateChange {
+            HasChange = true,
+            NewPosition = pos
+        };
         //update local state
         var playerState = GlobalState.LocalStates[PID.Value].PlayerState;
         playerState.Position = pos;
@@ -27,7 +29,12 @@ public class StateManager : MonoBehaviour {
 
 	public void ShootBullet(BulletState bullet) {
         SetPID();
-        StateChange update = new StateChange();
+        var bulletsCreated = new HashSet<BulletState>();
+        bulletsCreated.Add(bullet);
+        StateChange update = new StateChange {
+            HasChange = true,
+            BulletsCreated = bulletsCreated
+        };
         update.BulletsCreated.Add(bullet);
         //add bullet state to Global State
         ApplyStateChange(update);
