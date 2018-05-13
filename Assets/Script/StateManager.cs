@@ -51,7 +51,6 @@ public class StateManager : MonoBehaviour {
 	public void ApplyStateChange(StateChange stateChange) {
         //send the state change to server
         logictime.Set(logictime.x + 1, logictime.y);
-        Debug.Log("StateManager ApplyStateChange: " + stateChange.NewPosition);
         ClientNetwork.UpdateStateChange(stateChange,logictime);
 	}
 
