@@ -54,32 +54,36 @@ public class GameController : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         GlobalState GlobalState = StateManager.GetApproxState();
-        // Create remote player if not exists, update existing player states
-        foreach(int playerID in GlobalState.LocalStates.Keys)
+        if (GlobalState != null)
         {
-            PlayerState playerState = GlobalState.LocalStates[playerID].PlayerState;
-            if (PlayerDict.ContainsKey(playerID))
+            // Create remote player if not exists, update existing player states
+            foreach (int playerID in GlobalState.LocalStates.Keys)
             {
-                PlayerDict[playerID] = playerState;
+                PlayerState playerState = GlobalState.LocalStates[playerID].PlayerState;
+                if (PlayerDict.ContainsKey(playerID))
+                {
+                    PlayerDict[playerID] = playerState;
 
+                }
+            }
+            // Create bullets if not exists, update existing bullet State
+            foreach (int bulletID in GlobalState.BulletStates.Keys)
+            {
+                BulletState bulletState = GlobalState.BulletStates[bulletID];
+                if (!BulletDict.ContainsKey(bulletID))
+                {
+                    var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
+                    bullet.GetComponent<Bullet>().State = bulletState;
+                    bullet.GetComponent<Bullet>().StateManager = StateManager;
+                    BulletDict.Add(bulletState.BulletID, bulletState);
+                }
+                else
+                {
+                    BulletDict[bulletID] = bulletState;
+                }
             }
         }
-        // Create bullets if not exists, update existing bullet State
-        foreach(int bulletID in GlobalState.BulletStates.Keys)
-        {
-            BulletState bulletState = GlobalState.BulletStates[bulletID];
-            if (!BulletDict.ContainsKey(bulletID))
-            {
-                var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
-                bullet.GetComponent<Bullet>().State = bulletState;
-                bullet.GetComponent<Bullet>().StateManager = StateManager;
-                BulletDict.Add(bulletState.BulletID, bulletState);
-            }
-            else
-            {
-                BulletDict[bulletID] = bulletState;
-            }
-        }
+
 
 		
 	}

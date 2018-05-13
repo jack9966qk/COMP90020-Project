@@ -42,8 +42,8 @@ public class StateManager : MonoBehaviour {
 
 	public void UpdateServerState(GlobalState serverState, Vector2 logictime) {
         // TODO..
-        var existingBullets = GlobalState.BulletStates;
-        var newBullets = serverState.BulletStates;
+        //var existingBullets = GlobalState.BulletStates;
+        //var newBullets = serverState.BulletStates;
         // bullets created
         //foreach (var bulletId in newBullets.Keys) {
         //    if (!existingBullets.ContainsKey(bulletId) {
