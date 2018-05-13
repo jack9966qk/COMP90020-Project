@@ -76,20 +76,16 @@ public class GameController : MonoBehaviour {
                 }
             }
             // Create bullets if not exists, update existing bullet State
-            foreach (int bulletID in GlobalState.BulletStates.Keys)
-            {
+            foreach (int bulletID in GlobalState.BulletStates.Keys) {
                 Debug.Log("Bullet ID: " + bulletID);
                 BulletState bulletState = GlobalState.BulletStates[bulletID];
-                if (!BulletDict.ContainsKey(bulletID))
-                {
-                    var bullet = Instantiate(BulletPrefab, bulletState.InitialPosition, new Quaternion());
-                    bullet.GetComponent<Bullet>().State = bulletState;
-                    bullet.GetComponent<Bullet>().StateManager = StateManager;
+                if (!BulletDict.ContainsKey(bulletID)) {
+                    var bullet = Instantiate(BulletPrefab, bulletState.Position, new Quaternion());
+                    bullet.GetComponent<ClientBullet>().State = bulletState;
+                    bullet.GetComponent<ClientBullet>().StateManager = StateManager;
                     BulletDict.Add(bulletState.BulletID, bullet);
-                }
-                else
-                {
-                    BulletDict[bulletID].GetComponent<Bullet>().State = bulletState;
+                } else {
+                    BulletDict[bulletID].GetComponent<ClientBullet>().State = bulletState;
                 }
             }
         }

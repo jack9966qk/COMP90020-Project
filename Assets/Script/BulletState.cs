@@ -5,20 +5,17 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class BulletState : MessageBase {
-	public Vector2 InitialPosition;
+	public Vector2 Position;
 	public Direction Direction;
-	public double SpawnTime;
     public int BulletID;
 
     public override void Serialize(NetworkWriter writer) {
-		writer.Write(InitialPosition);
+		writer.Write(Position);
 		DirectionIO.writeDirectionToBuffer(Direction, writer);
-		writer.Write(SpawnTime);
     }
 
     public override void Deserialize(NetworkReader reader) {
-		InitialPosition = reader.ReadVector2();
+		Position = reader.ReadVector2();
 		Direction = DirectionIO.readDirectionFromBuffer(reader);
-		SpawnTime = reader.ReadInt32();
     }
 }

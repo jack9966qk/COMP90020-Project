@@ -66,9 +66,7 @@ public class PlayerController : MonoBehaviour {
                 BulletState bulletState = new BulletState
                 {
                     Direction = State.Orientation,
-                    SpawnTime = Network.time,
-                    InitialPosition = InitialBulletPosition()
-
+                    Position = InitialBulletPosition()
                 };
                 Debug.Log("Bullet Position: " + InitialBulletPosition());
                 Debug.Log("bullet sended");

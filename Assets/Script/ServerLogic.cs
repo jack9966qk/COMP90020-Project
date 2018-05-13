@@ -39,11 +39,11 @@ public class ServerLogic : MonoBehaviour {
 			foreach (BulletState bulletState in change.BulletsCreated) {
 				if (!bullets.ContainsKey(bulletState.BulletID)) {
 					// Init the bullets
-					var bullet = Instantiate(BulletPrefab, bulletState.InitialPosition, new Quaternion());
+					var bullet = Instantiate(BulletPrefab, bulletState.Position, new Quaternion());
 					bulletState.BulletID = bulletIdCounter;
 					bulletIdCounter += 1;
-					Debug.Log(bulletState.InitialPosition);
 					bullet.GetComponent<Bullet>().State = bulletState;
+					bullet.GetComponent<Bullet>().ServerLogic = this;
 					bullet.GetComponent<BulletCollision>().serverLogic = this;
 					bullets[bulletState.BulletID] = bullet.GetComponent<Bullet>();
 					GlobalState.BulletStates[bulletState.BulletID] = bulletState;
