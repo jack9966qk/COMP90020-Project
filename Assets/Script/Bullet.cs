@@ -8,13 +8,13 @@ public class Bullet : MonoBehaviour {
     int frame;
 	// Use this for initialization
 	void Start () {
-        frame = 0;
+        
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        frame++;
+        
         if (StateManager != null)
         {
             if (!StateManager.GetApproxState().BulletStates.ContainsKey(State.BulletID))
@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour {
 
     public void Move()
     {
-        float distance = frame * Constants.BulletSpeed;
+        float distance = (float) (Network.time - State.SpawnTime) * Constants.BulletSpeed;
         float x = this.State.InitialPosition.x;
         float y = this.State.InitialPosition.y;
         switch (State.Direction)
