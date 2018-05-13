@@ -6,6 +6,8 @@ public class StateManager : MonoBehaviour {
 	GlobalState GlobalState
 		= new GlobalState();
     Vector2 logictime = new Vector2(0, 0); //TO-DO
+    public GameObject PlayerPrefab;
+    public GameObject BulletPrefab;
     private static int? PID = null;
 	public GlobalState GetApproxState() {
 		return GlobalState;
@@ -39,7 +41,18 @@ public class StateManager : MonoBehaviour {
 	}
 
 	public void UpdateServerState(GlobalState serverState, Vector2 logictime) {
-		// TODO..
+        // TODO..
+        var existingBullets = GlobalState.BulletStates;
+        var newBullets = serverState.BulletStates;
+        // bullets created
+        foreach (var bulletId in newBullets.Keys) {
+            if (!existingBullets.ContainsKey(bulletId) {
+                // create new bullet
+                var bulletObject = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
+                bulletObject.GetComponent<Bullet>().State = newBullets[bulletId];
+            }
+        }
+        GlobalState = serverState;
 	}
 
     public void SetPID() {
