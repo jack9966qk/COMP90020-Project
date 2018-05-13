@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 public class BulletState : MessageBase {
 	public Vector2 InitialPosition;
 	public Direction Direction;
-	public float SpawnTime;
+	public double SpawnTime;
     public int BulletID;
 
     public override void Serialize(NetworkWriter writer) {

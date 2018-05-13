@@ -82,7 +82,7 @@ public class GameController : MonoBehaviour {
                 BulletState bulletState = GlobalState.BulletStates[bulletID];
                 if (!BulletDict.ContainsKey(bulletID))
                 {
-                    var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
+                    var bullet = Instantiate(BulletPrefab, bulletState.InitialPosition, new Quaternion());
                     bullet.GetComponent<Bullet>().State = bulletState;
                     bullet.GetComponent<Bullet>().StateManager = StateManager;
                     BulletDict.Add(bulletState.BulletID, bullet);
