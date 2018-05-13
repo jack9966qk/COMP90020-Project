@@ -10,7 +10,7 @@ public class StateManager : MonoBehaviour {
     }
 	GlobalState GlobalState
 		= new GlobalState();
-    Vector2 logictime = new Vector2(0, 0); //TO-DO
+    Vector2 logictime = new Vector2(0, 0);
     public GameObject PlayerPrefab;
     public GameObject BulletPrefab;
     private Queue<BufferItem> updateHistory;
@@ -41,7 +41,7 @@ public class StateManager : MonoBehaviour {
 	public void ApplyStateChange(StateChange stateChange) {
         logictime.Set(logictime.x + 1, logictime.y);
         //apply local state change
-        GlobalState.ApplyStateChange(stateChange);
+        GlobalState.ApplyStateChange(PID.Value,stateChange);
         //store state in history buffer
         updateHistory.Enqueue(new BufferItem {
             TimeStamp = logictime,
@@ -63,14 +63,6 @@ public class StateManager : MonoBehaviour {
         foreach(BufferItem update in updateHistory) {
             serverState.ApplyStateChange(PID.Value,update.Update);
         }
-        // bullets created
-        //foreach (var bulletId in newBullets.Keys) {
-        //    if (!existingBullets.ContainsKey(bulletId) {
-        //        // create new bullet
-        //        var bulletObject = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
-        //        bulletObject.GetComponent<Bullet>().State = newBullets[bulletId];
-        //    }
-        //}
         GlobalState = serverState;
 	}
 
@@ -83,12 +75,5 @@ public class StateManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         ClientNetwork.StateManager = this;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		// do approximation
-		// also apply transition (smoothing)
-		// update gloabl objects (bullets)
 	}
 }
