@@ -21,7 +21,6 @@ public class Bullet : MonoBehaviour {
             }
             // update position from state
             this.transform.position = globalState.BulletStates[State.BulletID].Position;
-        } else {
             Move();
         }
         if (State == null) return;
@@ -32,6 +31,7 @@ public class Bullet : MonoBehaviour {
         float distance = Time.fixedDeltaTime * Constants.BulletSpeed;
         float x = this.State.Position.x;
         float y = this.State.Position.y;
+        Debug.Log("before:" + transform.position);
         switch (State.Direction)
         {
             case Direction.Up:
@@ -49,6 +49,7 @@ public class Bullet : MonoBehaviour {
             default:
                 break;
         }
+        Debug.Log("after:" + transform.position);
         ServerLogic
             .GlobalState
             .BulletStates[State.BulletID]
