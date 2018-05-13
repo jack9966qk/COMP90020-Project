@@ -70,11 +70,7 @@ public class ClientNetwork : MonoBehaviour {
 			globalStateMsg.LogicTime);
 		Debug.Log("New global state received");
 
-        // no change
-        //if (changetosend == null) {
-        //	changetosend = new statechange();
-        //}
-        // send state change
+
         Debug.Log(changeToSend.HasChange);
         Debug.Log("Client Network: "+changeToSend.NewPosition);
 		client.Send(

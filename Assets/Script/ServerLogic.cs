@@ -32,10 +32,14 @@ public class ServerLogic : MonoBehaviour {
 	}
 
 	public void ApplyStateChange(Dictionary<int, StateChange> stateChanges) {
+		Debug.Log(stateChanges.Count);
 		foreach (var playerId in stateChanges.Keys) {
 			var change = stateChanges[playerId];
+			Debug.Log(change.HasChange);
+			if (!change.HasChange) continue;
 			// add bullets
 			foreach (BulletState bulletState in change.BulletsCreated) {
+				Debug.Log(bulletState.BulletID);
 				if (!bullets.ContainsKey(bulletState.BulletID)) {
 					// Init the bullets
 					var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
@@ -48,7 +52,9 @@ public class ServerLogic : MonoBehaviour {
 			}
 			// update player position
 			var playerState = GlobalState.LocalStates[playerId].PlayerState;
+			Debug.Log(change.NewPosition);
 			playerState.Position = change.NewPosition;
+			playerState.Orientation = change.NewOrientation;
 			players[playerId].State = playerState;
 		}
 	}
