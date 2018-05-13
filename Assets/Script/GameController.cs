@@ -18,37 +18,33 @@ public class GameController : MonoBehaviour {
 		
 	}
 
-    public void Initialise(int[] playerIDs)
+    public void Initialise(IEnumerable<int> playerIDs)
     {
-        for (int i = 0; i < playerIDs.Length; i++)
-        {
-            if (ClientNetwork.getPID() == playerIDs[i])
-            {
+        foreach (var playerID in playerIDs) {
+            if (ClientNetwork.getPID() == playerID) {
                 var localPlayer = Instantiate(PlayerPrefab, new Vector3(), new Quaternion());
                 localPlayer.GetComponent<PlayerController>().StateManager = StateManager;
                 PlayerState state = new PlayerState
                 {
                     Position = new Vector2(0, 0),
                     Orientation = Direction.Up,
-                    PlayerID = playerIDs[i],
+                    PlayerID = playerID,
                     HP = 100f
                 };
                 localPlayer.GetComponent<PlayerController>().State = state;
-                PlayerDict.Add(playerIDs[i], state);
-            }
-            else
-            {
+                PlayerDict.Add(playerID, state);
+            } else {
                 var player = Instantiate(RemotePlayerPrefab, new Vector3(), new Quaternion());
                 player.GetComponent<Player>().StateManager = StateManager;
                 PlayerState state = new PlayerState
                 {
                     Position = new Vector2(0, 0),
                     Orientation = Direction.Up,
-                    PlayerID = playerIDs[i],
+                    PlayerID = playerID,
                     HP = 100f
                 };
                 player.GetComponent<Player>().State = state;
-                PlayerDict.Add(playerIDs[i], state);
+                PlayerDict.Add(playerID, state);
             }
         }
 

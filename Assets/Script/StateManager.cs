@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StateManager : MonoBehaviour {
-	GlobalState GlobalState
-		= new GlobalState();
+	GlobalState GlobalState = null;
     Vector2 logictime = new Vector2(0, 0); //TO-DO
     public GameObject PlayerPrefab;
     public GameObject BulletPrefab;
@@ -53,6 +52,10 @@ public class StateManager : MonoBehaviour {
         //        bulletObject.GetComponent<Bullet>().State = newBullets[bulletId];
         //    }
         //}
+        if (GlobalState == null) {
+            var playerIds = serverState.LocalStates.Keys;
+            GameController.Initialise(playerIds);
+        }
         GlobalState = serverState;
 	}
 
