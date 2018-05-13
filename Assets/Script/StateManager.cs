@@ -15,13 +15,17 @@ public class StateManager : MonoBehaviour {
 	}
 
     // call when local player moves
-	public void Move(Vector2 pos) {
-        Debug.Log(pos.x+";"+pos.y);
+        
+	public void Move(Vector2 pos, Direction orientation) {
+        Debug.Log(pos.x + ";" + pos.y);
         SetPID();
         StateChange update = new StateChange
         {
             HasChange = true,
-            NewPosition = pos
+            NewPosition = pos,
+            NewOrientation = orientation
+            
+
         };
         //update local state
         var playerState = GlobalState.LocalStates[PID.Value].PlayerState;
