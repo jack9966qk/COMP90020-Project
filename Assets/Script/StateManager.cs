@@ -45,13 +45,13 @@ public class StateManager : MonoBehaviour {
         var existingBullets = GlobalState.BulletStates;
         var newBullets = serverState.BulletStates;
         // bullets created
-        foreach (var bulletId in newBullets.Keys) {
-            if (!existingBullets.ContainsKey(bulletId) {
-                // create new bullet
-                var bulletObject = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
-                bulletObject.GetComponent<Bullet>().State = newBullets[bulletId];
-            }
-        }
+        //foreach (var bulletId in newBullets.Keys) {
+        //    if (!existingBullets.ContainsKey(bulletId) {
+        //        // create new bullet
+        //        var bulletObject = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
+        //        bulletObject.GetComponent<Bullet>().State = newBullets[bulletId];
+        //    }
+        //}
         GlobalState = serverState;
 	}
 

@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour {
         State.Position = this.transform.position;
         State.Orientation = Direction.Up;
         State.HP = Constants.PlayerHP;
+        StateManager = GameObject.FindGameObjectWithTag("StateManager").GetComponent<StateManager>();
         
     }
 	
