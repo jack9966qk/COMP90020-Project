@@ -6,6 +6,8 @@ public class ServerLogic : MonoBehaviour {
 	public GameObject PlayerPrefab;
 	public GameObject BulletPrefab;
 
+	int bulletIdCounter = 0;
+
 	public void Initialise(int numPlayers) {
 		var localStates = new Dictionary<int, LocalState>();
 		for (var i = 0; i < numPlayers; i++) {
@@ -32,6 +34,8 @@ public class ServerLogic : MonoBehaviour {
 			foreach (BulletState bulletState in change.BulletsCreated) {
 				// Init the bullets
 				var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
+				bulletState.BulletID = bulletIdCounter;
+				bulletIdCounter += 1;
 				bullet.GetComponent<Bullet>().State = bulletState;
 				bullet.GetComponent<BulletCollision>().serverLogic = this;
 			}
