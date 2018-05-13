@@ -8,31 +8,42 @@ public class StateManager : MonoBehaviour {
         public Vector2 TimeStamp;
         public StateChange Update;
     }
-	GlobalState GlobalState
-		= new GlobalState();
     Vector2 logictime = new Vector2(0, 0);
     public GameObject PlayerPrefab;
     public GameObject BulletPrefab;
     private Queue<BufferItem> updateHistory;
+	GlobalState GlobalState = null;
+    public GameController GameController;
     private static int? PID = null;
     public int BulletCounter = 0;
 
 	public GlobalState GetApproxState() {
+        Debug.Log("GlobalState: " + GlobalState.LocalStates[(int)PID].PlayerState.Position);
 		return GlobalState;
 	}
 
     // call when local player moves
-	public void Move(Vector2 pos) {
+        
+	public void Move(Vector2 pos, Direction orientation) {
+        Debug.Log(pos.x + ";" + pos.y);
         SetPID();
-        StateChange update = new StateChange();
-        update.NewPosition = pos;
+        StateChange update = new StateChange
+        {
+            NewPosition = pos,
+            NewOrientation = orientation
+        };
         //update server state
         ApplyStateChange(update);
 	}
 
 	public void ShootBullet(BulletState bullet) {
         SetPID();
-        StateChange update = new StateChange();
+        var bulletsCreated = new HashSet<BulletState>();
+        bulletsCreated.Add(bullet);
+        StateChange update = new StateChange
+        {
+            BulletsCreated = bulletsCreated
+        };
         update.BulletsCreated.Add(bullet);
         //add bullet state to Global State
         ApplyStateChange(update);
@@ -60,8 +71,12 @@ public class StateManager : MonoBehaviour {
             updateHistory.Dequeue();
         }
         //rebuild State
-        foreach(BufferItem update in updateHistory) {
-            serverState.ApplyStateChange(PID.Value,update.Update);
+        foreach (BufferItem update in updateHistory) {
+            serverState.ApplyStateChange(PID.Value, update.Update);
+        }
+        if (GlobalState == null) {
+            var playerIds = serverState.LocalStates.Keys;
+            GameController.Initialise(playerIds);
         }
         GlobalState = serverState;
 	}

@@ -113,48 +113,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &246381049
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4082069600496834, guid: 4019fc3512fbfb449a45654633fc56e2, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082069600496834, guid: 4019fc3512fbfb449a45654633fc56e2, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -2.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082069600496834, guid: 4019fc3512fbfb449a45654633fc56e2, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082069600496834, guid: 4019fc3512fbfb449a45654633fc56e2, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082069600496834, guid: 4019fc3512fbfb449a45654633fc56e2, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082069600496834, guid: 4019fc3512fbfb449a45654633fc56e2, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082069600496834, guid: 4019fc3512fbfb449a45654633fc56e2, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082069600496834, guid: 4019fc3512fbfb449a45654633fc56e2, type: 2}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 4019fc3512fbfb449a45654633fc56e2, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &499331181
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +232,8 @@ MonoBehaviour:
   StateManager: {fileID: 1204938723}
   RemotePlayerPrefab: {fileID: 1387647653374582, guid: 64fbcd48a598add42b03a8ea83c4f611,
     type: 2}
-  PlayerPrefab: {fileID: 0}
+  PlayerPrefab: {fileID: 1026877559345864, guid: 4019fc3512fbfb449a45654633fc56e2,
+    type: 2}
   BulletPrefab: {fileID: 1314817107707428, guid: e58ab3a36ce582c4987b397849d1c30f,
     type: 2}
 --- !u!4 &944240088
@@ -319,6 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 0}
   BulletPrefab: {fileID: 0}
+  GameController: {fileID: 944240087}
 --- !u!4 &1204938724
 Transform:
   m_ObjectHideFlags: 0

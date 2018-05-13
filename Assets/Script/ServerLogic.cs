@@ -6,6 +6,9 @@ public class ServerLogic : MonoBehaviour {
 	public GameObject PlayerPrefab;
 	public GameObject BulletPrefab;
 
+	Dictionary<int, Player> players = new Dictionary<int, Player>();
+	Dictionary<int, Bullet> bullets = new Dictionary<int, Bullet>();
+
 	int bulletIdCounter = 0;
 
 	public void Initialise(int numPlayers) {
@@ -20,6 +23,7 @@ public class ServerLogic : MonoBehaviour {
 			};
 			var player = Instantiate(PlayerPrefab, new Vector3(), new Quaternion());
 			player.GetComponent<Player>().State = localStates[i].PlayerState;
+			players[i] = player.GetComponent<Player>();
 		}
 		GlobalState = new GlobalState {
 			LocalStates = localStates,
@@ -28,20 +32,32 @@ public class ServerLogic : MonoBehaviour {
 	}
 
 	public void ApplyStateChange(Dictionary<int, StateChange> stateChanges) {
+		Debug.Log(stateChanges.Count);
 		foreach (var playerId in stateChanges.Keys) {
 			var change = stateChanges[playerId];
 			// add bullets
 			foreach (BulletState bulletState in change.BulletsCreated) {
-				// Init the bullets
-				var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
-				bulletState.BulletID = bulletIdCounter;
-				bulletIdCounter += 1;
-				bullet.GetComponent<Bullet>().State = bulletState;
-				bullet.GetComponent<BulletCollision>().serverLogic = this;
+				Debug.Log(bulletState.BulletID);
+				if (!bullets.ContainsKey(bulletState.BulletID)) {
+					// Init the bullets
+					var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
+					bulletState.BulletID = bulletIdCounter;
+					bulletIdCounter += 1;
+					bullet.GetComponent<Bullet>().State = bulletState;
+					bullet.GetComponent<BulletCollision>().serverLogic = this;
+					bullets[bulletState.BulletID] = bullet.GetComponent<Bullet>();
+				}
 			}
 			// update player position
 			var playerState = GlobalState.LocalStates[playerId].PlayerState;
-			playerState.Position = change.NewPosition;
+			Debug.Log(change.NewPosition);
+			if (change.NewPosition.HasValue) {
+				playerState.Position = change.NewPosition.Value;
+			}
+			if (change.NewOrientation.HasValue) {
+				playerState.Orientation = change.NewOrientation.Value;
+			}
+			players[playerId].State = playerState;
 		}
 	}
 

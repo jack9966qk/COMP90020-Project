@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.NetworkSystem;
 
 public class ClientNetwork : MonoBehaviour {
-	static StateChange changeToSend = null;
+	static StateChange changeToSend = new StateChange();
 	static NetworkClient client = null;
 	public static StateManager StateManager;
 	static Vector2 clientLogicTime;
@@ -70,11 +70,7 @@ public class ClientNetwork : MonoBehaviour {
 			globalStateMsg.LogicTime);
 		Debug.Log("New global state received");
 
-        // no change
-		if (changeToSend == null) {
-			changeToSend = new StateChange();
-		}
-		// send state change
+        Debug.Log("Client Network: "+changeToSend.NewPosition);
 		client.Send(
 			NetworkMsgType.StateChangeSubmission,
 			new StateChangeMessage {
@@ -83,6 +79,6 @@ public class ClientNetwork : MonoBehaviour {
 			}
 		);
 		// reset state change
-		changeToSend = null;
+		changeToSend = new StateChange();
 	}
 }

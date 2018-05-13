@@ -5,52 +5,94 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
     public StateManager StateManager;
     public GameObject RemotePlayerPrefab;
+    public GameObject PlayerPrefab;
     public GameObject BulletPrefab;
 
-    public Dictionary<int, BulletState> BulletDict = new Dictionary<int, BulletState>();
-    public Dictionary<int, PlayerState> PlayerDict = new Dictionary<int, PlayerState>();
+    public Dictionary<int, GameObject> BulletDict = new Dictionary<int, GameObject>();
+    public Dictionary<int, GameObject> PlayerDict = new Dictionary<int, GameObject>();
+    //public PlayerController localPlayer = new PlayerController();
 
 	// Use this for initialization
 	void Start () {
 
+
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        GlobalState GlobalState = StateManager.GetApproxState();
-        // Create remote player if not exists, update existing player states
-        foreach(int playerID in GlobalState.LocalStates.Keys)
-        {
-            PlayerState playerState = GlobalState.LocalStates[playerID].PlayerState;
-            if (!PlayerDict.ContainsKey(playerID))
-            {
+
+    public void Initialise(IEnumerable<int> playerIDs)
+    {
+        foreach (var playerID in playerIDs) {
+            if (ClientNetwork.getPID() == playerID) {
+                var player = Instantiate(PlayerPrefab, new Vector3(), new Quaternion());
+                player.GetComponent<PlayerController>().StateManager = StateManager;
+                PlayerState state = new PlayerState
+                {
+                    Position = new Vector2(0, 0),
+                    Orientation = Direction.Up,
+                    PlayerID = playerID,
+                    HP = 100f
+                };
+                player.GetComponent<PlayerController>().State = state;
+                PlayerDict.Add(playerID, player);
+            } else {
                 var player = Instantiate(RemotePlayerPrefab, new Vector3(), new Quaternion());
-                player.GetComponent<Player>().State = playerState;
                 player.GetComponent<Player>().StateManager = StateManager;
-                PlayerDict[playerState.PlayerID] = playerState;
-            }
-            else
-            {
-                PlayerDict[playerID] = playerState;
+                PlayerState state = new PlayerState
+                {
+                    Position = new Vector2(0, 0),
+                    Orientation = Direction.Up,
+                    PlayerID = playerID,
+                    HP = 100f
+                };
+                player.GetComponent<Player>().State = state;
+                PlayerDict.Add(playerID, player);
             }
         }
-        // Create bullets if not exists, update existing bullet State
-        foreach(int bulletID in GlobalState.BulletStates.Keys)
+
+    }
+
+
+    // Update is called once per frame
+    void Update () {
+        GlobalState GlobalState = StateManager.GetApproxState();
+        if (GlobalState != null)
         {
-            BulletState bulletState = GlobalState.BulletStates[bulletID];
-            if (!BulletDict.ContainsKey(bulletID))
+            // Create remote player if not exists, update existing player states
+            foreach (int playerID in GlobalState.LocalStates.Keys)
             {
-                var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
-                bullet.GetComponent<Bullet>().State = bulletState;
-                bullet.GetComponent<Bullet>().StateManager = StateManager;
-                BulletDict[bulletState.BulletID] = bulletState;
+                PlayerState playerState = GlobalState.LocalStates[playerID].PlayerState;
+                if (PlayerDict.ContainsKey(playerID))
+                {
+                    if (playerID == ClientNetwork.getPID())
+                    {
+                        PlayerDict[playerID].GetComponent<PlayerController>().State= playerState;
+                    }
+                    else
+                    {
+                        PlayerDict[playerID].GetComponent<Player>().State = playerState;
+                    }
+                    
+
+                }
             }
-            else
+            // Create bullets if not exists, update existing bullet State
+            foreach (int bulletID in GlobalState.BulletStates.Keys)
             {
-                BulletDict[bulletID] = bulletState;
+                BulletState bulletState = GlobalState.BulletStates[bulletID];
+                if (!BulletDict.ContainsKey(bulletID))
+                {
+                    var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
+                    bullet.GetComponent<Bullet>().State = bulletState;
+                    bullet.GetComponent<Bullet>().StateManager = StateManager;
+                    BulletDict.Add(bulletState.BulletID, bullet);
+                }
+                else
+                {
+                    BulletDict[bulletID].GetComponent<Bullet>().State = bulletState;
+                }
             }
         }
+
 
 		
 	}

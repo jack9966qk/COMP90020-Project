@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour {
         State.Position = this.transform.position;
         State.Orientation = Direction.Up;
         State.HP = Constants.PlayerHP;
-        StateManager = GameObject.FindGameObjectWithTag("StateManager").GetComponent<StateManager>();
         
     }
 	
@@ -23,72 +22,88 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
         if (StateManager != null)
         {
+            //Debug.Log("State Manager is not null");
             if (!StateManager.GetApproxState().LocalStates.ContainsKey(State.PlayerID))
             {
                 Destroy(this.gameObject);
             }
+            // TODO change below to fit updated StateManager
+            float distance = Time.fixedDeltaTime * Constants.PlayerSpeed;
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                //State.move(Direction.Up, distance);
+                Vector2 pos = move(Direction.Up, distance);
+                StateManager.Move(pos,Direction.Up);
+                Debug.Log(pos);
+            }
+            else if (Input.GetKey(KeyCode.DownArrow))
+            {
+                //State.move(Direction.Down, distance);
+                Vector2 pos = move(Direction.Down, distance);
+                StateManager.Move(pos,Direction.Down);
+                Debug.Log(pos);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                //State.move(Direction.Left, distance);
+                Vector2 pos = move(Direction.Left, distance);
+                StateManager.Move(pos,Direction.Left);
+                Debug.Log(pos);
+            }
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                Vector2 pos = move(Direction.Right, distance);
+                StateManager.Move(pos,Direction.Right);
+                Debug.Log(pos);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                //GameObject bullet = GameObject.Instantiate((GameObject)Resources.Load("ClientBullet"), InitialBulletPosition(), this.transform.rotation);
+                //bullet.GetComponent<Bullet>().State.Direction = State.Orientation;
+                //bullet.GetComponent<Bullet>().State.SpawnTime = Time.time;
+                //bullet.GetComponent<Bullet>().State.InitialPosition = InitialBulletPosition();
+                BulletState bulletState = new BulletState
+                {
+                    Direction = State.Orientation,
+                    SpawnTime = Time.time,
+                    InitialPosition = InitialBulletPosition()
+
+                };
+                StateManager.ShootBullet(bulletState);
+            }
+
+            // update GameObject
+            float x = State.Position.x;
+            float y = State.Position.y;
+            float z = transform.position.z;
+            transform.position = new Vector3(x, y, z);
+
+            switch (State.Orientation)
+            {
+                case Direction.Up:
+                    transform.rotation = Quaternion.Euler(0, 0, 0);
+                    break;
+                case Direction.Down:
+                    transform.rotation = Quaternion.Euler(0, 0, 180);
+                    break;
+                case Direction.Left:
+                    transform.rotation = Quaternion.Euler(0, 0, 90);
+                    break;
+                case Direction.Right:
+                    transform.rotation = Quaternion.Euler(0, 0, 270);
+                    break;
+                default:
+                    break;
+            }
+
+            if (!State.IsAlive)
+            {
+                this.gameObject.SetActive(false);
+            }
 
         }
-        // TODO change below to fit updated StateManager
-        float distance = Time.fixedDeltaTime * Constants.PlayerSpeed;
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            State.move(Direction.Up, distance);
-            StateManager.Move(State.Position);
-        }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            State.move(Direction.Down, distance);
-            StateManager.Move(State.Position);
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            State.move(Direction.Left, distance);
-            StateManager.Move(State.Position);
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            State.move(Direction.Right, distance);
-            StateManager.Move(State.Position);
-        }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            GameObject bullet = GameObject.Instantiate((GameObject)Resources.Load("ClientBullet"),InitialBulletPosition(),this.transform.rotation);
-            bullet.GetComponent<Bullet>().State.Direction = State.Orientation;
-            bullet.GetComponent<Bullet>().State.SpawnTime = Time.time;
-            bullet.GetComponent<Bullet>().State.InitialPosition = InitialBulletPosition();
-            StateManager.ShootBullet(bullet.GetComponent<Bullet>().State);
-        }
-
-        // update GameObject
-        float x = State.Position.x;
-        float y = State.Position.y;
-        float z = transform.position.z;
-        transform.position = new Vector3(x, y, z);
-
-        switch (State.Orientation)
-        {
-            case Direction.Up:
-                transform.rotation = Quaternion.Euler(0, 0, 0);
-                break;
-            case Direction.Down:
-                transform.rotation = Quaternion.Euler(0, 0, 180);
-                break;
-            case Direction.Left:
-                transform.rotation = Quaternion.Euler(0, 0, 90);
-                break;
-            case Direction.Right:
-                transform.rotation = Quaternion.Euler(0, 0, 270);
-                break;
-            default:
-                break;
-        }
-
-        if (!State.IsAlive)
-        {
-            this.gameObject.SetActive(false);
-        }
     }
 
     public Vector2 InitialBulletPosition()
@@ -115,6 +130,32 @@ public class PlayerController : MonoBehaviour {
                 break;
         }
         return bulletPosition;
+    }
+
+    public Vector2 move(Direction direction, float distance)
+    {
+        float x = this.State.Position.x;
+        float y = this.State.Position.y;
+        Vector2 pos = new Vector2();
+        switch (direction)
+        {
+            case Direction.Up:
+                pos = new Vector2(x, y + distance);
+                break;
+            case Direction.Down:
+                pos = new Vector2(x, y - distance);
+                break;
+            case Direction.Left:
+                pos = new Vector2(x - distance, y);
+                break;
+            case Direction.Right:
+                pos = new Vector2(x + distance, y);
+                break;
+            default:
+                break;
+        }
+        return pos;
+
     }
 
 }

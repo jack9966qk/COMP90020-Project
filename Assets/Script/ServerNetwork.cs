@@ -89,9 +89,9 @@ public class ServerNetwork : MonoBehaviour {
         // TODO stretch goal - fix this ---------------
 		if (submitted.Count >= numPlayers) {
 			submitted.Clear();
-			stateChanges.Clear();
 			// Call serverlogic to update global game state
 			ServerLogic.ApplyStateChange(stateChanges);
+			stateChanges.Clear();
 			Debug.Log("Send new global state");
 			broadcastGlobalState();
 		}
@@ -106,7 +106,7 @@ public class ServerNetwork : MonoBehaviour {
 		numPlayers += 1;
 
 		// start the game if all players connected
-		if (numPlayers >= 2) {
+		if (numPlayers >= 1) {
 			startGame();
 		}
 	}
