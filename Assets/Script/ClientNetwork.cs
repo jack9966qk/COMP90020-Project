@@ -54,6 +54,11 @@ public class ClientNetwork : MonoBehaviour {
 		LocalPlayerId = msg.ReadMessage<IntegerMessage>().value;
 	}
 
+    public static int? getPID()
+    {
+        return LocalPlayerId;
+    }
+
 	static void OnNewGlobalState(NetworkMessage msg) {
 		// receive global state
 		serverState = msg.ReadMessage<GlobalState>();
