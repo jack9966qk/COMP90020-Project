@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour {
                 var player = Instantiate(RemotePlayerPrefab, new Vector3(), new Quaternion());
                 player.GetComponent<Player>().State = playerState;
                 player.GetComponent<Player>().StateManager = StateManager;
-                PlayerDict.Add(playerState.PlayerID, playerState);
+                PlayerDict[playerState.PlayerID] = playerState;
             }
             else
             {
@@ -44,7 +44,7 @@ public class GameController : MonoBehaviour {
                 var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
                 bullet.GetComponent<Bullet>().State = bulletState;
                 bullet.GetComponent<Bullet>().StateManager = StateManager;
-                BulletDict.Add(bulletState.BulletID, bulletState);
+                BulletDict[bulletState.BulletID] = bulletState;
             }
             else
             {
