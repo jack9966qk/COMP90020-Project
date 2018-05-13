@@ -70,6 +70,8 @@ public class PlayerController : MonoBehaviour {
                     InitialPosition = InitialBulletPosition()
 
                 };
+                Debug.Log("Bullet Position: " + InitialBulletPosition());
+                Debug.Log("bullet sended");
                 StateManager.ShootBullet(bulletState);
             }
 

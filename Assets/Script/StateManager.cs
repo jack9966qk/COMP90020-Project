@@ -40,6 +40,7 @@ public class StateManager : MonoBehaviour {
             BulletsCreated = bulletsCreated
         };
         update.BulletsCreated.Add(bullet);
+        Debug.Log("State manager receive bullet");
         //add bullet state to Global State
         ApplyStateChange(update);
         

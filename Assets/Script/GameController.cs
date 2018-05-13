@@ -78,6 +78,7 @@ public class GameController : MonoBehaviour {
             // Create bullets if not exists, update existing bullet State
             foreach (int bulletID in GlobalState.BulletStates.Keys)
             {
+                Debug.Log("Bullet ID: " + bulletID);
                 BulletState bulletState = GlobalState.BulletStates[bulletID];
                 if (!BulletDict.ContainsKey(bulletID))
                 {
