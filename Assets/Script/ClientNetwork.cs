@@ -71,10 +71,12 @@ public class ClientNetwork : MonoBehaviour {
 		Debug.Log("New global state received");
 
         // no change
-		//if (changetosend == null) {
-		//	changetosend = new statechange();
-		//}
-		// send state change
+        //if (changetosend == null) {
+        //	changetosend = new statechange();
+        //}
+        // send state change
+        Debug.Log(changeToSend.HasChange);
+        Debug.Log("Client Network: "+changeToSend.NewPosition);
 		client.Send(
 			NetworkMsgType.StateChangeSubmission,
 			new StateChangeMessage {
