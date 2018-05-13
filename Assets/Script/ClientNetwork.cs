@@ -8,7 +8,7 @@ using UnityEngine.Networking.NetworkSystem;
 public class ClientNetwork : MonoBehaviour {
 	static StateChange changeToSend = null;
 	static NetworkClient client = null;
-	static StateManager StateManager;
+	public static StateManager StateManager;
 	static Vector2 clientLogicTime;
 
 	static int? LocalPlayerId = null;
@@ -32,7 +32,7 @@ public class ClientNetwork : MonoBehaviour {
 	}
 
 	public void Start() {
-		StartClient("127.0.0.1", Constants.Port);	
+		StartClient("131.170.169.104", Constants.Port);	
 	}
 
 	static void OnClientConnect(NetworkMessage msg) {

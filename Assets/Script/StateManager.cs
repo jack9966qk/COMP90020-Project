@@ -63,7 +63,7 @@ public class StateManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+        ClientNetwork.StateManager = this;
 	}
 	
 	// Update is called once per frame
