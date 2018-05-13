@@ -19,6 +19,7 @@ public class Bullet : MonoBehaviour {
         {
             if (!StateManager.GetApproxState().BulletStates.ContainsKey(State.BulletID))
             {
+                Debug.Log("Destroy");
                 Destroy(this.gameObject);
             }
         }

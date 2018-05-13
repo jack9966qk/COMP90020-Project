@@ -37,20 +37,20 @@ public class ServerLogic : MonoBehaviour {
 			var change = stateChanges[playerId];
 			// add bullets
 			foreach (BulletState bulletState in change.BulletsCreated) {
-				Debug.Log(bulletState.BulletID);
 				if (!bullets.ContainsKey(bulletState.BulletID)) {
 					// Init the bullets
-					var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
+					var bullet = Instantiate(BulletPrefab, bulletState.InitialPosition, new Quaternion());
 					bulletState.BulletID = bulletIdCounter;
 					bulletIdCounter += 1;
+					Debug.Log(bulletState.InitialPosition);
 					bullet.GetComponent<Bullet>().State = bulletState;
 					bullet.GetComponent<BulletCollision>().serverLogic = this;
 					bullets[bulletState.BulletID] = bullet.GetComponent<Bullet>();
+					GlobalState.BulletStates[bulletState.BulletID] = bulletState;
 				}
 			}
 			// update player position
 			var playerState = GlobalState.LocalStates[playerId].PlayerState;
-			Debug.Log(change.NewPosition);
 			if (change.NewPosition.HasValue) {
 				playerState.Position = change.NewPosition.Value;
 			}
