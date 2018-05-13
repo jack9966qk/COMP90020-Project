@@ -106,7 +106,7 @@ public class ServerNetwork : MonoBehaviour {
 		numPlayers += 1;
 
 		// start the game if all players connected
-		if (numPlayers >= 2) {
+		if (numPlayers >= 1) {
 			startGame();
 		}
 	}
