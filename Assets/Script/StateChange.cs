@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 
-public class StateChange : MessageBase {
+public class StateChange : MessageBase {\
     public bool HasChange = false;
     // new position
     public Vector2 NewPosition = new Vector2();

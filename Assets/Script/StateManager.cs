@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StateManager : MonoBehaviour {
+    struct BufferItem
+    {
+        public Vector2 TimeStamp;
+        public StateChange Update;
+    }
 	GlobalState GlobalState
 		= new GlobalState();
     Vector2 logictime = new Vector2(0, 0); //TO-DO
     public GameObject PlayerPrefab;
     public GameObject BulletPrefab;
+    private Queue<BufferItem> updateHistory;
     private static int? PID = null;
+    public int BulletCounter = 0;
+
 	public GlobalState GetApproxState() {
 		return GlobalState;
 	}
@@ -18,9 +26,6 @@ public class StateManager : MonoBehaviour {
         SetPID();
         StateChange update = new StateChange();
         update.NewPosition = pos;
-        //update local state
-        var playerState = GlobalState.LocalStates[PID.Value].PlayerState;
-        playerState.Position = pos;
         //update server state
         ApplyStateChange(update);
 	}
@@ -31,12 +36,18 @@ public class StateManager : MonoBehaviour {
         update.BulletsCreated.Add(bullet);
         //add bullet state to Global State
         ApplyStateChange(update);
-        
     }
 
 	public void ApplyStateChange(StateChange stateChange) {
-        //send the state change to server
         logictime.Set(logictime.x + 1, logictime.y);
+        //apply local state change
+        GlobalState.ApplyStateChange(stateChange);
+        //store state in history buffer
+        updateHistory.Enqueue(new BufferItem {
+            TimeStamp = logictime,
+            Update = stateChange
+        });
+        //send the state change to server
         ClientNetwork.UpdateStateChange(stateChange,logictime);
 	}
 
@@ -44,6 +55,14 @@ public class StateManager : MonoBehaviour {
         // TODO..
         var existingBullets = GlobalState.BulletStates;
         var newBullets = serverState.BulletStates;
+        //remove old items from updateHistory 
+        while (updateHistory.Peek().TimeStamp.x < logictime.x) {
+            updateHistory.Dequeue();
+        }
+        //rebuild State
+        foreach(BufferItem update in updateHistory) {
+            serverState.ApplyStateChange(PID.Value,update.Update);
+        }
         // bullets created
         //foreach (var bulletId in newBullets.Keys) {
         //    if (!existingBullets.ContainsKey(bulletId) {

@@ -9,8 +9,15 @@ public class GlobalState : MessageBase {
 		= new Dictionary<int, LocalState>();
 
 	// bullet states shared globally
-	public Dictionary<int, BulletState> BulletStates
-		= new Dictionary<int, BulletState>();
+	public Dictionary<string, BulletState> BulletStates
+		= new Dictionary<string, BulletState>();
+
+    public void ApplyStateChange(int playerId, StateChange stateChange) {
+        LocalStates[playerId].PlayerState.Position = stateChange.NewPosition;
+        foreach (var bulletState in stateChange.BulletsCreated) {
+            BulletStates[bulletState.BulletID] = (bulletState);
+        }
+    }
 
 	public override void Serialize(NetworkWriter writer) {
 		writer.Write(LocalStates.Count);
