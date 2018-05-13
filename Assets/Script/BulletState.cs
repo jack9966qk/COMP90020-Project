@@ -7,33 +7,8 @@ using UnityEngine.Networking;
 public class BulletState : MessageBase {
 	public Vector2 InitialPosition;
 	public Direction Direction;
-	public int SpawnTime;
-	
-	// public Vector2 Position;
-	// public Direction Direction;
-	// public float Speed = 10f;
-	// public float Damage = 30f;
-
-	// public void Move(float distance) {
-	// 	float x = this.Position.x;
-	// 	float y = this.Position.y;
-	// 	switch (Direction) {
-	// 		case Direction.Up:
-	// 			this.Position = new Vector2(x, y + distance);
-	// 			break;
-	// 		case Direction.Down:
-	// 			this.Position = new Vector2(x, y - distance);
-	// 			break;
-	// 		case Direction.Left:
-	// 			this.Position = new Vector2(x - distance, y);
-	// 			break;
-	// 		case Direction.Right:
-	// 			this.Position = new Vector2(x + distance, y);
-	// 			break;
-	// 		default:
-	// 			break;
-	// 	}
-	// }
+	public float SpawnTime;
+    public int BulletID;
 
     public override void Serialize(NetworkWriter writer) {
 		writer.Write(InitialPosition);

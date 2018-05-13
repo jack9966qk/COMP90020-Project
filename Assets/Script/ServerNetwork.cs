@@ -6,13 +6,16 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.NetworkSystem;
 
 public class ServerNetwork : MonoBehaviour {
-	public static GlobalState GlobalState;
-	static Dictionary<int, StateChange> stateChanges
+	Dictionary<int, StateChange> stateChanges
 		= new Dictionary<int, StateChange>();
-	static int numPlayers = 0;
-	static HashSet<int> submitted = new HashSet<int>();
-	static Dictionary<int, int> connToPlayerId = new Dictionary<int, int>();
-	public static void StartServer(int serverPort) {
+	int numPlayers = 0;
+	HashSet<int> submitted = new HashSet<int>();
+	Dictionary<int, int> connToPlayerId = new Dictionary<int, int>();
+	Dictionary<int, int> clientTimes = new Dictionary<int, int>();
+	int serverTime = 0;
+
+	public ServerLogic ServerLogic;
+	public void StartServer(int serverPort) {
 		// GlobalState = initialState;
 		
 		// system messages
@@ -35,10 +38,10 @@ public class ServerNetwork : MonoBehaviour {
 		StartServer(Constants.Port);
 	}
 
-	static void startGame() {
+	void startGame() {
 		// start the game by broadcasting global state for the first time
 		Debug.Log("Start game");
-		GlobalState = GlobalState.Initialise(numPlayers);
+		ServerLogic.Initialise(numPlayers);
 
 		// for each client, send player id
 		foreach (var connId in connToPlayerId.Keys) {
@@ -47,19 +50,38 @@ public class ServerNetwork : MonoBehaviour {
 			NetworkServer.SendToClient(connId, NetworkMsgType.AssignPlayerId, msg);
 		}
 		
-		// broadcast global states
-		NetworkServer.SendToAll(NetworkMsgType.NewGlobalState, GlobalState);
+		broadcastGlobalState();
 	}
 
-	static void OnStateChangeSubmission(NetworkMessage msg) {
-		Debug.Log("state change received");
-		var change = msg.ReadMessage<StateChange>();
-		var connId = msg.conn.connectionId;
-		if (!stateChanges.ContainsKey(connId)) {
-			stateChanges[connId] = change;
-		} else {
-			stateChanges[connId].merge(change);
+	void broadcastGlobalState() {
+		serverTime += 1;
+
+		foreach (var connId in connToPlayerId.Keys) {
+			var playerId = connToPlayerId[connId];
+			NetworkServer.SendToClient(
+				connId,
+				NetworkMsgType.NewGlobalState,
+				new GlobalStateMessage {
+					LogicTime = new Vector2(serverTime, clientTimes[playerId]),
+					GlobalState = ServerLogic.GlobalState
+				}
+			);
 		}
+	}
+
+	void OnStateChangeSubmission(NetworkMessage msg) {
+		Debug.Log("state change received");
+		var stateChangeMsg = msg.ReadMessage<StateChangeMessage>();
+		var change = stateChangeMsg.StateChange;
+		var connId = msg.conn.connectionId;
+		var playerId = connToPlayerId[connId];
+		if (!stateChanges.ContainsKey(playerId)) {
+			stateChanges[playerId] = change;
+		} else {
+			stateChanges[playerId].merge(change);
+		}
+		var time = stateChangeMsg.LogicTime;
+		clientTimes[playerId] = (int)time.y;
 
 		submitted.Add(connToPlayerId[msg.conn.connectionId]);
 
@@ -68,16 +90,19 @@ public class ServerNetwork : MonoBehaviour {
 		if (submitted.Count >= numPlayers) {
 			submitted.Clear();
 			stateChanges.Clear();
-			// TODO Call serverlogic to update global game state
+			// Call serverlogic to update global game state
+			ServerLogic.ApplyStateChange(stateChanges);
 			Debug.Log("Send new global state");
-			NetworkServer.SendToAll(NetworkMsgType.NewGlobalState, GlobalState);
+			broadcastGlobalState();
 		}
 	}
 
-	static void OnClientConnect(NetworkMessage msg) {
+	void OnClientConnect(NetworkMessage msg) {
 		Debug.Log("Connected");
 		// associate connected client to player ID
 		connToPlayerId[msg.conn.connectionId] = numPlayers;
+		// initialise client time
+		clientTimes[numPlayers] = 0;
 		numPlayers += 1;
 
 		// start the game if all players connected
@@ -86,11 +111,11 @@ public class ServerNetwork : MonoBehaviour {
 		}
 	}
 
-	static void OnClientDisconnect(NetworkMessage msg) {
+	void OnClientDisconnect(NetworkMessage msg) {
 		Debug.Log("Disconnected");
 	}
 
-	static void OnClientError(NetworkMessage msg) {
+	void OnClientError(NetworkMessage msg) {
 		Debug.Log("Error");
 	}
 }

@@ -11,12 +11,13 @@ public class StateManager : MonoBehaviour {
 		return GlobalState;
 	}
 
+    // call when local player moves
 	public void Move(Vector2 pos) {
         SetPID();
         StateChange update = new StateChange();
         update.NewPosition = pos;
         //update local state
-        var playerState = GlobalState.GetLocalState(PID.Value).PlayerState;
+        var playerState = GlobalState.LocalStates[PID.Value].PlayerState;
         playerState.Position = pos;
         //update server state
         ApplyStateChange(update);
@@ -33,10 +34,11 @@ public class StateManager : MonoBehaviour {
 
 	public void ApplyStateChange(StateChange stateChange) {
         //send the state change to server
-        ClientNetwork.UpdateStateChange(stateChange);
+        logictime.Set(logictime.x + 1, logictime.y);
+        ClientNetwork.UpdateStateChange(stateChange,logictime);
 	}
 
-	public void UpdateServerState(GlobalState serverState) {
+	public void UpdateServerState(GlobalState serverState, Vector2 logictime) {
 		// TODO..
 	}
 
