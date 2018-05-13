@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114473056133455104}
   m_Layer: 0
   m_Name: ClientBullet
-  m_TagString: Untagged
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73,8 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3999280f4279c4a4d9445dd12c6682e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 2.17
-  Damage: 2
+  StateManager: {fileID: 0}
 --- !u!212 &212926170571756066
 SpriteRenderer:
   m_ObjectHideFlags: 1

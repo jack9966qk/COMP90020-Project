@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
     public PlayerState State;
+    public StateManager StateManager;
 	// Use this for initialization
 	void Start () {
 		
@@ -11,6 +12,14 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (StateManager != null)
+        {
+            if (!StateManager.GetApproxState().LocalStates.ContainsKey(State.PlayerID))
+            {
+                Destroy(this.gameObject);
+            }
+
+        }
         if (State == null) return;
         this.transform.position = State.Position;
         switch (State.Orientation)

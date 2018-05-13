@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
     public BulletState State = new BulletState();
+    public StateManager StateManager;
 	// Use this for initialization
 	void Start () {
 
@@ -12,6 +13,13 @@ public class Bullet : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (StateManager != null)
+        {
+            if (!StateManager.GetApproxState().BulletStates.ContainsKey(State.BulletID))
+            {
+                Destroy(this.gameObject);
+            }
+        }
         if (State == null) return;
         Move();
     }

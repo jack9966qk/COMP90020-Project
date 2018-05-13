@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 114342089073160284}
   m_Layer: 0
   m_Name: ServerBullet
-  m_TagString: Untagged
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -227,6 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f2c053ac8e3fdd46876968104da91e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverLogic: {fileID: 0}
 --- !u!114 &114507920103188750
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -238,6 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3999280f4279c4a4d9445dd12c6682e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StateManager: {fileID: 0}
 --- !u!212 &212822471290913192
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -20,6 +20,14 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (StateManager != null)
+        {
+            if (!StateManager.GetApproxState().LocalStates.ContainsKey(State.PlayerID))
+            {
+                Destroy(this.gameObject);
+            }
+
+        }
         // TODO change below to fit updated StateManager
         float distance = Time.fixedDeltaTime * Constants.PlayerSpeed;
         if (Input.GetKey(KeyCode.UpArrow))

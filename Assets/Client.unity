@@ -271,6 +271,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6bdde024f1def47a9eac0623d7aa64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StateManager: {fileID: 1204938723}
+  RemotePlayerPrefab: {fileID: 1387647653374582, guid: 64fbcd48a598add42b03a8ea83c4f611,
+    type: 2}
+  BulletPrefab: {fileID: 1314817107707428, guid: e58ab3a36ce582c4987b397849d1c30f,
+    type: 2}
 --- !u!4 &944240088
 Transform:
   m_ObjectHideFlags: 0
@@ -299,7 +304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1204938723
 MonoBehaviour:
   m_ObjectHideFlags: 0
