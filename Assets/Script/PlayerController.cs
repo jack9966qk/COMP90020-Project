@@ -33,27 +33,27 @@ public class PlayerController : MonoBehaviour {
             {
                 //State.move(Direction.Up, distance);
                 Vector2 pos = move(Direction.Up, distance);
-                StateManager.Move(pos);
+                StateManager.Move(pos,Direction.Up);
                 Debug.Log(pos);
             }
             else if (Input.GetKey(KeyCode.DownArrow))
             {
                 //State.move(Direction.Down, distance);
                 Vector2 pos = move(Direction.Down, distance);
-                StateManager.Move(pos);
+                StateManager.Move(pos,Direction.Down);
                 Debug.Log(pos);
             }
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
                 //State.move(Direction.Left, distance);
                 Vector2 pos = move(Direction.Left, distance);
-                StateManager.Move(pos);
+                StateManager.Move(pos,Direction.Left);
                 Debug.Log(pos);
             }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
                 Vector2 pos = move(Direction.Right, distance);
-                StateManager.Move(pos);
+                StateManager.Move(pos,Direction.Right);
                 Debug.Log(pos);
             }
 
