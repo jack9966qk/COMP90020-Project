@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ClientNetwork
   - Bullet
+  - StateManager
   layers:
   - Default
   - TransparentFX

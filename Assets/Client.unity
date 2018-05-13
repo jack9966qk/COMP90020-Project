@@ -274,6 +274,7 @@ MonoBehaviour:
   StateManager: {fileID: 1204938723}
   RemotePlayerPrefab: {fileID: 1387647653374582, guid: 64fbcd48a598add42b03a8ea83c4f611,
     type: 2}
+  PlayerPrefab: {fileID: 0}
   BulletPrefab: {fileID: 1314817107707428, guid: e58ab3a36ce582c4987b397849d1c30f,
     type: 2}
 --- !u!4 &944240088
@@ -300,7 +301,7 @@ GameObject:
   - component: {fileID: 1204938723}
   m_Layer: 0
   m_Name: StateManager
-  m_TagString: Untagged
+  m_TagString: StateManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -316,6 +317,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 784209f187cfd44598d235040f454a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerPrefab: {fileID: 0}
+  BulletPrefab: {fileID: 0}
 --- !u!4 &1204938724
 Transform:
   m_ObjectHideFlags: 0
