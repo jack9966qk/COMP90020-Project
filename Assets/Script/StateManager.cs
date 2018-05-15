@@ -48,6 +48,7 @@ public class StateManager : MonoBehaviour {
             }
             
             foreach (var pair in currentState.LocalStates) {
+                if (PID == null) break;
                 if (pair.Key == PID) continue;
                 var playerState = pair.Value.PlayerState;
                 // player movement
