@@ -31,19 +31,19 @@ public class PlayerController : MonoBehaviour {
                 if (Input.GetKey(KeyCode.UpArrow)) {
                     Vector2 pos = move(Direction.Up, distance);
                     StateManager.Move(pos, Direction.Up);
-                    Debug.Log(pos);
+                    // Debug.Log(pos);
                 } else if (Input.GetKey(KeyCode.DownArrow)) {
                     Vector2 pos = move(Direction.Down, distance);
                     StateManager.Move(pos, Direction.Down);
-                    Debug.Log(pos);
+                    // Debug.Log(pos);
                 } else if (Input.GetKey(KeyCode.LeftArrow)) {
                     Vector2 pos = move(Direction.Left, distance);
                     StateManager.Move(pos, Direction.Left);
-                    Debug.Log(pos);
+                    // Debug.Log(pos);
                 } else if (Input.GetKey(KeyCode.RightArrow)) {
                     Vector2 pos = move(Direction.Right, distance);
                     StateManager.Move(pos, Direction.Right);
-                    Debug.Log(pos);
+                    // Debug.Log(pos);
                 }
 
                 // shoot bullet

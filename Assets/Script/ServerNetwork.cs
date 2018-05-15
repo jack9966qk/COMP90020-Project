@@ -62,7 +62,7 @@ public class ServerNetwork : MonoBehaviour {
 				connId,
 				NetworkMsgType.NewGlobalState,
 				new GlobalStateMessage {
-					LogicTime = new Vector2(serverTime, clientTimes[playerId]),
+					LogicTime = new Vector2(clientTimes[playerId], serverTime),
 					GlobalState = ServerLogic.GlobalState
 				}
 			);
@@ -81,7 +81,7 @@ public class ServerNetwork : MonoBehaviour {
 			stateChanges[playerId].merge(change);
 		}
 		var time = stateChangeMsg.LogicTime;
-		clientTimes[playerId] = (int)time.y;
+		clientTimes[playerId] = (int)time.x;
 
 		submitted.Add(connToPlayerId[msg.conn.connectionId]);
 
