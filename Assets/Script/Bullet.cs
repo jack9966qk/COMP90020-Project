@@ -32,7 +32,7 @@ public class Bullet : MonoBehaviour {
 
     public void Move()
     {
-        float distance = Time.fixedDeltaTime * Constants.BulletSpeed;
+        float distance = Time.deltaTime * Constants.BulletSpeed;
         float x = this.State.Position.x;
         float y = this.State.Position.y;
         // Debug.Log("before:" + transform.position);

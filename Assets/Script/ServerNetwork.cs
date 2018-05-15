@@ -55,8 +55,11 @@ public class ServerNetwork : MonoBehaviour {
 
 	void broadcastGlobalState() {
 		serverTime += 1;
+		StartCoroutine(sendGlobalState());		
+	}
 
-		System.Threading.Thread.Sleep((int)(Constants.ArtificialLatency * 1000));
+	IEnumerator sendGlobalState() {
+		yield return new WaitForSeconds(Constants.ArtificialLatency);
 		foreach (var connId in connToPlayerId.Keys) {
 			var playerId = connToPlayerId[connId];
 			NetworkServer.SendToClient(

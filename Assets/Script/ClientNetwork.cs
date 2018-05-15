@@ -70,7 +70,6 @@ public class ClientNetwork : MonoBehaviour {
 			globalStateMsg.LogicTime);
 		Debug.Log("New global state received");
 
-		System.Threading.Thread.Sleep((int)(Constants.ArtificialLatency * 1000));
 		client.Send(
 			NetworkMsgType.StateChangeSubmission,
 			new StateChangeMessage {
