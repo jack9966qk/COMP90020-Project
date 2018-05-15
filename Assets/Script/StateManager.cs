@@ -18,39 +18,62 @@ public class StateManager : MonoBehaviour {
     private static int bulletIdCounter = 0;
 
 	public GlobalState GetApproxState() {
-        float currentTime = Time.time;
+		return GlobalState;
+	}
+
+    void Update() {
         //update all bullets
         if (GlobalState != null) {
             GlobalState currentState = GlobalState;
             foreach (KeyValuePair<string, BulletState> bullet in currentState.BulletStates) {
-                float distance = (currentTime-prevTime) * Constants.BulletSpeed;
+                float distance = (Time.deltaTime) * Constants.BulletSpeed;
                 float x = bullet.Value.Position.x;
                 float y = bullet.Value.Position.y;
-                //Debug.Log("before:" + transform.position);
                 switch (bullet.Value.Direction) {
                     case Direction.Up:
-                        this.transform.position = new Vector2(x, y + distance);
+                        bullet.Value.Position = new Vector2(x, y + distance);
                         break;
                     case Direction.Down:
-                        this.transform.position = new Vector2(x, y - distance);
+                        bullet.Value.Position = new Vector2(x, y - distance);
                         break;
                     case Direction.Left:
-                        this.transform.position = new Vector2(x - distance, y);
+                        bullet.Value.Position = new Vector2(x - distance, y);
                         break;
                     case Direction.Right:
-                        this.transform.position = new Vector2(x + distance, y);
+                        bullet.Value.Position = new Vector2(x + distance, y);
                         break;
                     default:
                         break;
                 }
-                //Debug.Log("after:" + transform.position);
-                bullet.Value.Position = transform.position;
+            }
+            
+            foreach (var pair in currentState.LocalStates) {
+                if (pair.Key == PID) continue;
+                var playerState = pair.Value.PlayerState;
+                // player movement
+                float distance = Time.deltaTime * Constants.PlayerSpeed;
+                float x = playerState.Position.x;
+                float y = playerState.Position.y;
+                switch (playerState.Orientation) {
+                    case Direction.Up:
+                        playerState.Position = new Vector2(x, y + distance);
+                        break;
+                    case Direction.Down:
+                        playerState.Position = new Vector2(x, y - distance);
+                        break;
+                    case Direction.Left:
+                        playerState.Position = new Vector2(x - distance, y);
+                        break;
+                    case Direction.Right:
+                        playerState.Position = new Vector2(x + distance, y);
+                        break;
+                    default:
+                        break;
+                }
             }
             GlobalState.DebugBulletStates();
         }
-        prevTime = currentTime;
-		return GlobalState;
-	}
+    }
 
     // call when local player moves
         
@@ -60,7 +83,7 @@ public class StateManager : MonoBehaviour {
             NewPosition = pos,
             NewOrientation = orientation
         };
-        //update server state
+        // update server state
         ApplyStateChange(update);
 	}
 
