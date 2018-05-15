@@ -50,7 +50,6 @@ public class StateManager : MonoBehaviour {
     // call when local player moves
         
 	public void Move(Vector2 pos, Direction orientation) {
-        Debug.Log(pos.x + ";" + pos.y);
         SetPID();
         StateChange update = new StateChange
         {
