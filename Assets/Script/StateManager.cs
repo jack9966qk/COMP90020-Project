@@ -18,32 +18,34 @@ public class StateManager : MonoBehaviour {
 
 	public GlobalState GetApproxState() {
         //update all bullets
-        GlobalState currentState = GlobalState;
-        foreach (KeyValuePair<string, BulletState> bullet in currentState.BulletStates) {
-            float distance = Time.fixedDeltaTime * Constants.BulletSpeed;
-            float x = bullet.Value.Position.x;
-            float y = bullet.Value.Position.y;
-            //Debug.Log("before:" + transform.position);
-            switch (bullet.Value.Direction) {
-                case Direction.Up:
-                    this.transform.position = new Vector2(x, y + distance);
-                    break;
-                case Direction.Down:
-                    this.transform.position = new Vector2(x, y - distance);
-                    break;
-                case Direction.Left:
-                    this.transform.position = new Vector2(x - distance, y);
-                    break;
-                case Direction.Right:
-                    this.transform.position = new Vector2(x + distance, y);
-                    break;
-                default:
-                    break;
+        if (GlobalState != null) {
+            GlobalState currentState = GlobalState;
+            foreach (KeyValuePair<string, BulletState> bullet in currentState.BulletStates) {
+                float distance = Time.fixedDeltaTime * Constants.BulletSpeed;
+                float x = bullet.Value.Position.x;
+                float y = bullet.Value.Position.y;
+                //Debug.Log("before:" + transform.position);
+                switch (bullet.Value.Direction) {
+                    case Direction.Up:
+                        this.transform.position = new Vector2(x, y + distance);
+                        break;
+                    case Direction.Down:
+                        this.transform.position = new Vector2(x, y - distance);
+                        break;
+                    case Direction.Left:
+                        this.transform.position = new Vector2(x - distance, y);
+                        break;
+                    case Direction.Right:
+                        this.transform.position = new Vector2(x + distance, y);
+                        break;
+                    default:
+                        break;
+                }
+                //Debug.Log("after:" + transform.position);
+                bullet.Value.Position = transform.position;
             }
-            //Debug.Log("after:" + transform.position);
-           bullet.Value.Position = transform.position;
+            GlobalState.DebugBulletStates();
         }
-        GlobalState.DebugBulletStates();
 		return GlobalState;
 	}
 
