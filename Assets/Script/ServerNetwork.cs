@@ -56,6 +56,7 @@ public class ServerNetwork : MonoBehaviour {
 	void broadcastGlobalState() {
 		serverTime += 1;
 
+		System.Threading.Thread.Sleep((int)(Constants.ArtificialLatency * 1000));
 		foreach (var connId in connToPlayerId.Keys) {
 			var playerId = connToPlayerId[connId];
 			NetworkServer.SendToClient(
@@ -106,7 +107,7 @@ public class ServerNetwork : MonoBehaviour {
 		numPlayers += 1;
 
 		// start the game if all players connected
-		if (numPlayers >= 1) {
+		if (numPlayers >= 2) {
 			startGame();
 		}
 	}
