@@ -24,14 +24,14 @@ public class ClientBullet : MonoBehaviour {
             var globalState = StateManager.GetApproxState();
             if (!globalState.BulletStates.ContainsKey(State.BulletID)) {
                 GameController.BulletDict.Remove(State.BulletID);
-                Debug.Log("Destroy");
+             //   Debug.Log("Destroy");
                 Destroy(this.gameObject);
             }
             else
             {
                 // update position from state
                 var bulletPos = globalState.BulletStates[State.BulletID].Position;
-                Debug.Log("bullet: " + bulletPos);
+             //   Debug.Log("bullet: " + bulletPos);
                 transform.position = bulletPos;
                 // if (bulletPos != targetPosition)
                 // {
@@ -41,7 +41,7 @@ public class ClientBullet : MonoBehaviour {
                 // }
                 // this.transform.position = Vector2.Lerp(
                 //     lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
-                Debug.Log("Client Bullet: " + globalState.BulletStates[State.BulletID].Position);
+            //    Debug.Log("Client Bullet: " + globalState.BulletStates[State.BulletID].Position);
             }
 
         }

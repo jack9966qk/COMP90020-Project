@@ -75,7 +75,7 @@ public class StateManager : MonoBehaviour {
             BulletsCreated = bulletsCreated
         };
         update.BulletsCreated.Add(bullet);
-        Debug.Log("State manager receive bullet");
+        //Debug.Log("State manager receive bullet");
         //add bullet state to Global State
         ApplyStateChange(update);
     }
@@ -103,6 +103,7 @@ public class StateManager : MonoBehaviour {
         }
 
         //rebuild State
+        Debug.Log("future predictions" + updateHistory.Count);
         foreach (BufferItem update in updateHistory) {
             Debug.Log(update.TimeStamp);
             serverState.ApplyStateChange(PID.Value, update.Update);

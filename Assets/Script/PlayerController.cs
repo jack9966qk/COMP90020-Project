@@ -53,8 +53,8 @@ public class PlayerController : MonoBehaviour {
                         Direction = State.Orientation,
                         Position = InitialBulletPosition()
                     };
-                    Debug.Log("Bullet Position: " + InitialBulletPosition());
-                    Debug.Log("bullet sended");
+                //    Debug.Log("Bullet Position: " + InitialBulletPosition());
+                //    Debug.Log("bullet sended");
                     StateManager.ShootBullet(bulletState);
                 }
 

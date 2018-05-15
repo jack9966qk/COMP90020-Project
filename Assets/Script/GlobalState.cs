@@ -30,7 +30,7 @@ public class GlobalState : MessageBase {
     public void DebugBulletStates() {
         int i = 0;
         foreach (KeyValuePair<string, BulletState> item in BulletStates) {
-            Debug.Log("Bullet "+ i +": \nx: " +item.Value.Position.x+", y: "+item.Value.Position.y);
+        //    Debug.Log("Bullet "+ i +": \nx: " +item.Value.Position.x+", y: "+item.Value.Position.y);
             i++;
         }
     }
