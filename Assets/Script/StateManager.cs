@@ -13,15 +13,17 @@ public class StateManager : MonoBehaviour {
 	GlobalState GlobalState = null;
     public GameController GameController;
     private static int? PID = null;
+    private float prevTime = 0;
 
     private static int bulletIdCounter = 0;
 
 	public GlobalState GetApproxState() {
+        float currentTime = Time.time;
         //update all bullets
         if (GlobalState != null) {
             GlobalState currentState = GlobalState;
             foreach (KeyValuePair<string, BulletState> bullet in currentState.BulletStates) {
-                float distance = Time.fixedDeltaTime * Constants.BulletSpeed;
+                float distance = (currentTime-prevTime) * Constants.BulletSpeed;
                 float x = bullet.Value.Position.x;
                 float y = bullet.Value.Position.y;
                 //Debug.Log("before:" + transform.position);
@@ -46,6 +48,7 @@ public class StateManager : MonoBehaviour {
             }
             GlobalState.DebugBulletStates();
         }
+        prevTime = currentTime;
 		return GlobalState;
 	}
 
