@@ -105,7 +105,7 @@ public class StateManager : MonoBehaviour {
         //rebuild State
         Debug.Log("future predictions" + updateHistory.Count);
         foreach (BufferItem update in updateHistory) {
-            Debug.Log(update.TimeStamp);
+            // Debug.Log(update.TimeStamp);
             serverState.ApplyStateChange(PID.Value, update.Update);
         } if (GlobalState == null) {
             var playerIds = serverState.LocalStates.Keys;

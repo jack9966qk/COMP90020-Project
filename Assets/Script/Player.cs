@@ -62,8 +62,7 @@ public class Player : MonoBehaviour {
             // update position
             if (State == null) return;
             var playerPos = State.Position;
-            if (playerPos != targetPosition)
-            {
+            if (playerPos != targetPosition) {
                 lastPosition = transform.position;
                 targetPosition = playerPos;
                 lerpStartTime = Time.time;
