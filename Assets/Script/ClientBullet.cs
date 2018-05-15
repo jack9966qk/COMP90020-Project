@@ -35,7 +35,7 @@ public class ClientBullet : MonoBehaviour {
                 lerpStartTime = Time.time;
             }
             this.transform.position = Vector2.Lerp(
-                lastPosition, State.Position, (Time.deltaTime - lerpStartTime) / lerpTime);
+                lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
             this.transform.position = globalState.BulletStates[State.BulletID].Position;
             Debug.Log("Client Bullet: "+globalState.BulletStates[State.BulletID].Position);
         }

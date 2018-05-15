@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour {
                 lerpStartTime = Time.time;
             }
             this.transform.position = Vector2.Lerp(
-                lastPosition, State.Position, (Time.deltaTime - lerpStartTime) / lerpTime);
+                lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
 
                 switch (State.Orientation)
                 {
