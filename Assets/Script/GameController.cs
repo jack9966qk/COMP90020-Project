@@ -32,6 +32,7 @@ public class GameController : MonoBehaviour {
                     HP = 100f
                 };
                 player.GetComponent<PlayerController>().State = state;
+                player.GetComponent<PlayerController>().GameController = this;
                 PlayerDict.Add(playerID, player);
             } else {
                 var player = Instantiate(RemotePlayerPrefab, new Vector3(), new Quaternion());
@@ -44,6 +45,7 @@ public class GameController : MonoBehaviour {
                     HP = 100f
                 };
                 player.GetComponent<Player>().State = state;
+                player.GetComponent<Player>().GameController = this;
                 PlayerDict.Add(playerID, player);
             }
         }
@@ -69,8 +71,7 @@ public class GameController : MonoBehaviour {
                     else
                     {
                         PlayerDict[playerID].GetComponent<Player>().State = playerState;
-                    }
-                    
+                    }                  
 
                 }
             }
@@ -82,10 +83,11 @@ public class GameController : MonoBehaviour {
                     var bullet = Instantiate(BulletPrefab, bulletState.Position, new Quaternion());
                     bullet.GetComponent<ClientBullet>().State = bulletState;
                     bullet.GetComponent<ClientBullet>().StateManager = StateManager;
+                    bullet.GetComponent<ClientBullet>().GameController = this;
                     BulletDict.Add(bulletState.BulletID, bullet);
                 } else {
                     BulletDict[bulletID].GetComponent<ClientBullet>().State = bulletState;
-                    Debug.Log("Game Controller:" +bulletState.Position);
+                    Debug.Log("Game Controller Bullet:" +bulletState.Position);
                 }
             }
         }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 	public StateManager StateManager;
     public PlayerState State = new PlayerState();
+    public GameController GameController;
     private static int FireRate = 5;
 
 	// Use this for initialization
@@ -19,75 +20,80 @@ public class PlayerController : MonoBehaviour {
         {
             if (!StateManager.GetApproxState().LocalStates.ContainsKey(State.PlayerID))
             {
+                GameController.PlayerDict.Remove(State.PlayerID);
                 Destroy(this.gameObject);
             }
-
-            // player movement
-            float distance = Time.fixedDeltaTime * Constants.PlayerSpeed;
-            if (Input.GetKey(KeyCode.UpArrow))
+            else
             {
-                Vector2 pos = move(Direction.Up, distance);
-                StateManager.Move(pos,Direction.Up);
-                Debug.Log(pos);
-            }
-            else if (Input.GetKey(KeyCode.DownArrow))
-            {
-                Vector2 pos = move(Direction.Down, distance);
-                StateManager.Move(pos,Direction.Down);
-                Debug.Log(pos);
-            }
-            else if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                Vector2 pos = move(Direction.Left, distance);
-                StateManager.Move(pos,Direction.Left);
-                Debug.Log(pos);
-            }
-            else if (Input.GetKey(KeyCode.RightArrow))
-            {
-                Vector2 pos = move(Direction.Right, distance);
-                StateManager.Move(pos,Direction.Right);
-                Debug.Log(pos);
-            }
-
-            // shoot bullet
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-
-                BulletState bulletState = new BulletState
+                // player movement
+                float distance = Time.fixedDeltaTime * Constants.PlayerSpeed;
+                if (Input.GetKey(KeyCode.UpArrow))
                 {
-                    Direction = State.Orientation,
-                    Position = InitialBulletPosition()
-                };
-                Debug.Log("Bullet Position: " + InitialBulletPosition());
-                Debug.Log("bullet sended");
-                StateManager.ShootBullet(bulletState);
+                    Vector2 pos = move(Direction.Up, distance);
+                    StateManager.Move(pos, Direction.Up);
+                    Debug.Log(pos);
+                }
+                else if (Input.GetKey(KeyCode.DownArrow))
+                {
+                    Vector2 pos = move(Direction.Down, distance);
+                    StateManager.Move(pos, Direction.Down);
+                    Debug.Log(pos);
+                }
+                else if (Input.GetKey(KeyCode.LeftArrow))
+                {
+                    Vector2 pos = move(Direction.Left, distance);
+                    StateManager.Move(pos, Direction.Left);
+                    Debug.Log(pos);
+                }
+                else if (Input.GetKey(KeyCode.RightArrow))
+                {
+                    Vector2 pos = move(Direction.Right, distance);
+                    StateManager.Move(pos, Direction.Right);
+                    Debug.Log(pos);
+                }
+
+                // shoot bullet
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+
+                    BulletState bulletState = new BulletState
+                    {
+                        Direction = State.Orientation,
+                        Position = InitialBulletPosition()
+                    };
+                    Debug.Log("Bullet Position: " + InitialBulletPosition());
+                    Debug.Log("bullet sended");
+                    StateManager.ShootBullet(bulletState);
+                }
+
+                // update GameObject
+                this.transform.position = State.Position;
+
+                switch (State.Orientation)
+                {
+                    case Direction.Up:
+                        transform.rotation = Quaternion.Euler(0, 0, 0);
+                        break;
+                    case Direction.Down:
+                        transform.rotation = Quaternion.Euler(0, 0, 180);
+                        break;
+                    case Direction.Left:
+                        transform.rotation = Quaternion.Euler(0, 0, 90);
+                        break;
+                    case Direction.Right:
+                        transform.rotation = Quaternion.Euler(0, 0, 270);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (!State.IsAlive)
+                {
+                    this.gameObject.SetActive(false);
+                }
             }
 
-            // update GameObject
-            this.transform.position = State.Position;
 
-            switch (State.Orientation)
-            {
-                case Direction.Up:
-                    transform.rotation = Quaternion.Euler(0, 0, 0);
-                    break;
-                case Direction.Down:
-                    transform.rotation = Quaternion.Euler(0, 0, 180);
-                    break;
-                case Direction.Left:
-                    transform.rotation = Quaternion.Euler(0, 0, 90);
-                    break;
-                case Direction.Right:
-                    transform.rotation = Quaternion.Euler(0, 0, 270);
-                    break;
-                default:
-                    break;
-            }
-
-            if (!State.IsAlive)
-            {
-                this.gameObject.SetActive(false);
-            }
 
         }
 
