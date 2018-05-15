@@ -13,9 +13,17 @@ public class GlobalState : MessageBase {
 		= new Dictionary<string, BulletState>();
 
     public void ApplyStateChange(int playerId, StateChange stateChange) {
-        LocalStates[playerId].PlayerState.Position = stateChange.NewPosition;
+		// update player state
+		var playerState = LocalStates[playerId].PlayerState;
+		if (stateChange.NewPosition.HasValue) {
+			playerState.Position = stateChange.NewPosition.Value;
+		}
+		if (stateChange.NewOrientation.HasValue) {
+			playerState.Orientation = stateChange.NewOrientation.Value;
+		}
+		// add new bullets
         foreach (var bulletState in stateChange.BulletsCreated) {
-            BulletStates[bulletState.BulletID] = (bulletState);
+            BulletStates[bulletState.BulletID] = bulletState;
         }
     }
 
