@@ -12,10 +12,10 @@ public class StateManager : MonoBehaviour {
     private Queue<BufferItem> updateHistory = new Queue<BufferItem>();
 	GlobalState GlobalState {
         get {
-            Debug.Log("get global state");
+           // Debug.Log("get global state");
             return _globalState;
         } set {
-            Debug.Log("set global state");
+          //  Debug.Log("set global state");
             _globalState = value;
         }
     }
@@ -27,20 +27,19 @@ public class StateManager : MonoBehaviour {
     private static int bulletIdCounter = 0;
 
 	public GlobalState GetApproxState() {
-        Debug.Log("GetApproxState");
-        Debug.Log(GlobalState.LocalStates.Count);
+       // Debug.Log("GetApproxState");
+      //  Debug.Log(GlobalState.LocalStates.Count);
 
         foreach (var pair in GlobalState.LocalStates) {
             if (pair.Key == PID) continue;
-            Debug.Log(GlobalState.LocalStates[pair.Key].PlayerState.Position);
+           // Debug.Log(GlobalState.LocalStates[pair.Key].PlayerState.Position);
         }
-        Debug.Log("GetApproxState End");
         return GlobalState;
 	}
 
     void Update() {
         //update all bullets
-        Debug.Log("Update start");
+       // Debug.Log("Update start");
         if(PID == null) PID = ClientNetwork.getPID();
         if (GlobalState != null) {
             GlobalState currentState = GlobalState;
@@ -93,9 +92,9 @@ public class StateManager : MonoBehaviour {
                 GlobalState.LocalStates[pair.Key].PlayerState = playerState;
                 //Debug.Log(GlobalState.LocalStates[pair.Key].PlayerState.Position);
             }
-            GlobalState.DebugBulletStates();
+           // GlobalState.DebugBulletStates();
         }
-        Debug.Log("Update End");
+       // Debug.Log("Update End");
     }
 
     // call when local player moves
@@ -143,13 +142,48 @@ public class StateManager : MonoBehaviour {
         // TODO..
         //var existingBullets = GlobalState.BulletStates;
         //var newBullets = serverState.BulletStates;
+
         //remove old items from updateHistory 
         while (updateHistory.Count > 0 && updateHistory.Peek().TimeStamp.x < logictime.x) {
             updateHistory.Dequeue();
         }
+        if(PID == null) {
+            PID = ClientNetwork.getPID();
+        }
+        //use current position to calculate desired position for each player
+        if (updateHistory.Count > 0) {
+            BufferItem currentUpdate = updateHistory.Dequeue();
+            // Vector2 oldPos = currentUpdate.Update.NewPosition.Value;
+            // Vector2 currentPos = GlobalState.LocalStates[PID.Value].PlayerState.Position;
+            // float distance = Mathf.Abs(currentPos.x - oldPos.x) + Mathf.Abs(currentPos.y - oldPos.y);
+            /* foreach (KeyValuePair<int, LocalState> player in serverState.LocalStates) {
+                 if (player.Key == PID) {
+                     continue;
+                 }
+                 Direction orientation = player.Value.PlayerState.Orientation;
+                 float x = player.Value.PlayerState.Position.x;
+                 float y = player.Value.PlayerState.Position.y;
+                 switch (orientation) {
+                     case Direction.Up:
+                         player.Value.PlayerState.Position = new Vector2(x, y + distance);
+                         break;
+                     case Direction.Down:
+                         player.Value.PlayerState.Position = new Vector2(x, y - distance);
+                         break;
+                     case Direction.Left:
+                         player.Value.PlayerState.Position = new Vector2(x - distance, y);
+                         break;
+                     case Direction.Right:
+                         player.Value.PlayerState.Position = new Vector2(x + distance, y);
+                         break;
+                     default:
+                         break;
 
+                 }
+             }*/
+        }
         //rebuild State
-        Debug.Log("future predictions" + updateHistory.Count);
+        //Debug.Log("future predictions" + updateHistory.Count);
         foreach (BufferItem update in updateHistory) {
             // Debug.Log(update.TimeStamp);
             serverState.ApplyStateChange(PID.Value, update.Update);

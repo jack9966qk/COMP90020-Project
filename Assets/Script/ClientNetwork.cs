@@ -32,7 +32,7 @@ public class ClientNetwork : MonoBehaviour {
 	}
 
 	public void Start() {
-		StartClient("10.12.13.60", Constants.Port);	
+		StartClient("localhost", Constants.Port);	
 	}
 
 	static void OnClientConnect(NetworkMessage msg) {
@@ -68,7 +68,7 @@ public class ClientNetwork : MonoBehaviour {
 		StateManager.UpdateServerState(
 			globalStateMsg.GlobalState,
 			globalStateMsg.LogicTime);
-		Debug.Log("New global state received");
+		//Debug.Log("New global state received");
 
 		client.Send(
 			NetworkMsgType.StateChangeSubmission,

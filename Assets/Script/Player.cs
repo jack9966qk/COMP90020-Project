@@ -29,8 +29,7 @@ public class Player : MonoBehaviour {
         }
         var playerPos = State.Position;
         transform.position = State.Position;
-        Debug.Log(State.Position);
-        Debug.Log(transform.position);
+
         //if (playerPos != targetPosition) {
         //    lastPosition = transform.position;
         //    targetPosition = playerPos;
@@ -66,7 +65,7 @@ public class Player : MonoBehaviour {
                 Destroy(this.gameObject);
                 return;
             }
-            Debug.Log("Player: " + State.Position);
+            //Debug.Log("Player: " + State.Position);
             updateTransform();
         } else {
             // is server side player
