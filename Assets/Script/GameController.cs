@@ -29,7 +29,7 @@ public class GameController : MonoBehaviour {
                     Position = new Vector2(0, 0),
                     Orientation = Direction.Up,
                     PlayerID = playerID,
-                    HP = 100f
+                    HP = Constants.PlayerHP
                 };
                 player.GetComponent<PlayerController>().State = state;
                 player.GetComponent<PlayerController>().GameController = this;
@@ -42,7 +42,7 @@ public class GameController : MonoBehaviour {
                     Position = new Vector2(0, 0),
                     Orientation = Direction.Up,
                     PlayerID = playerID,
-                    HP = 100f
+                    HP = Constants.PlayerHP
                 };
                 player.GetComponent<Player>().State = state;
                 player.GetComponent<Player>().GameController = this;
