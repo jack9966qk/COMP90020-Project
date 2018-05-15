@@ -40,7 +40,6 @@ public class ServerLogic : MonoBehaviour {
 					var bullet = Instantiate(BulletPrefab, bulletState.Position, new Quaternion());
 					bullet.GetComponent<Bullet>().State = bulletState;
 					bullet.GetComponent<Bullet>().ServerLogic = this;
-					bullet.GetComponent<BulletCollision>().serverLogic = this;
 					bullets[bulletState.BulletID] = bullet.GetComponent<Bullet>();
 					GlobalState.BulletStates[bulletState.BulletID] = bulletState;
 				}

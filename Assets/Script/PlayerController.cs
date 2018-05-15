@@ -9,12 +9,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //initialise player state
-
-        //StateManager.InitialiseLocalState(PlayerID);
-        State.Position = this.transform.position;
-        State.Orientation = Direction.Up;
-        State.HP = Constants.PlayerHP;
+        
         
     }
 	
@@ -22,30 +17,27 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
         if (StateManager != null)
         {
-            //Debug.Log("State Manager is not null");
             if (!StateManager.GetApproxState().LocalStates.ContainsKey(State.PlayerID))
             {
                 Destroy(this.gameObject);
             }
-            // TODO change below to fit updated StateManager
+
+            // player movement
             float distance = Time.fixedDeltaTime * Constants.PlayerSpeed;
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                //State.move(Direction.Up, distance);
                 Vector2 pos = move(Direction.Up, distance);
                 StateManager.Move(pos,Direction.Up);
                 Debug.Log(pos);
             }
             else if (Input.GetKey(KeyCode.DownArrow))
             {
-                //State.move(Direction.Down, distance);
                 Vector2 pos = move(Direction.Down, distance);
                 StateManager.Move(pos,Direction.Down);
                 Debug.Log(pos);
             }
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
-                //State.move(Direction.Left, distance);
                 Vector2 pos = move(Direction.Left, distance);
                 StateManager.Move(pos,Direction.Left);
                 Debug.Log(pos);
@@ -57,12 +49,10 @@ public class PlayerController : MonoBehaviour {
                 Debug.Log(pos);
             }
 
+            // shoot bullet
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                //GameObject bullet = GameObject.Instantiate((GameObject)Resources.Load("ClientBullet"), InitialBulletPosition(), this.transform.rotation);
-                //bullet.GetComponent<Bullet>().State.Direction = State.Orientation;
-                //bullet.GetComponent<Bullet>().State.SpawnTime = Time.time;
-                //bullet.GetComponent<Bullet>().State.InitialPosition = InitialBulletPosition();
+
                 BulletState bulletState = new BulletState
                 {
                     Direction = State.Orientation,
@@ -74,10 +64,7 @@ public class PlayerController : MonoBehaviour {
             }
 
             // update GameObject
-            float x = State.Position.x;
-            float y = State.Position.y;
-            float z = transform.position.z;
-            transform.position = new Vector3(x, y, z);
+            this.transform.position = State.Position;
 
             switch (State.Orientation)
             {
@@ -106,6 +93,7 @@ public class PlayerController : MonoBehaviour {
 
     }
 
+    // The initial position of bullet, which is 1 cm away from the player in the direction player is facing
     public Vector2 InitialBulletPosition()
     {
         Vector2 bulletPosition = State.Position;
@@ -132,6 +120,7 @@ public class PlayerController : MonoBehaviour {
         return bulletPosition;
     }
 
+    // Calculate the next position of the player
     public Vector2 move(Direction direction, float distance)
     {
         float x = this.State.Position.x;

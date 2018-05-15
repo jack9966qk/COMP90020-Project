@@ -55,4 +55,14 @@ public class Bullet : MonoBehaviour {
             .BulletStates[State.BulletID]
             .Position = transform.position;
     }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag.Equals("Player"))
+        {
+            int playerID = collision.gameObject.GetComponent<Player>().State.PlayerID;
+            string bulletID = transform.parent.gameObject.GetComponent<Bullet>().State.BulletID;
+            ServerLogic.OnCollision(bulletID, playerID);
+        }
+    }
 }

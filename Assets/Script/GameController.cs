@@ -10,7 +10,6 @@ public class GameController : MonoBehaviour {
 
     public Dictionary<string, GameObject> BulletDict = new Dictionary<string, GameObject>();
     public Dictionary<int, GameObject> PlayerDict = new Dictionary<int, GameObject>();
-    //public PlayerController localPlayer = new PlayerController();
 
 	// Use this for initialization
 	void Start () {
