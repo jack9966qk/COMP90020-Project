@@ -19,9 +19,13 @@ public class Bullet : MonoBehaviour {
                 Debug.Log("Destroy");
                 Destroy(this.gameObject);
             }
-            // update position from state
-            this.transform.position = globalState.BulletStates[State.BulletID].Position;
-            Move();
+            else
+            {
+                // update position from state
+                this.transform.position = globalState.BulletStates[State.BulletID].Position;
+                Move();
+            }
+
         }
         if (State == null) return;
     }
@@ -62,13 +66,13 @@ public class Bullet : MonoBehaviour {
         }
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals("Player"))
-        {
+        if (collision.gameObject.CompareTag("Player")) {          
             int playerID = collision.gameObject.GetComponent<Player>().State.PlayerID;
-            string bulletID = transform.parent.gameObject.GetComponent<Bullet>().State.BulletID;
+            string bulletID = State.BulletID;
             ServerLogic.OnCollision(bulletID, playerID);
-        }
+         }
     }
+
 }
