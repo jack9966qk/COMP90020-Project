@@ -81,6 +81,7 @@ public class GameController : MonoBehaviour {
                 BulletState bulletState = GlobalState.BulletStates[bulletID];
                 if (!BulletDict.ContainsKey(bulletID)) {
                     var bullet = Instantiate(BulletPrefab, bulletState.Position, new Quaternion());
+                    Debug.Log("game controller: " + bulletState.Position);
                     bullet.GetComponent<ClientBullet>().State = bulletState;
                     bullet.GetComponent<ClientBullet>().StateManager = StateManager;
                     bullet.GetComponent<ClientBullet>().GameController = this;

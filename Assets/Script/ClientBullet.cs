@@ -31,15 +31,16 @@ public class ClientBullet : MonoBehaviour {
             {
                 // update position from state
                 var bulletPos = globalState.BulletStates[State.BulletID].Position;
-                if (bulletPos != targetPosition)
-                {
-                    lastPosition = transform.position;
-                    targetPosition = bulletPos;
-                    lerpStartTime = Time.time;
-                }
-                this.transform.position = Vector2.Lerp(
-                    lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
-                this.transform.position = globalState.BulletStates[State.BulletID].Position;
+                Debug.Log("bullet: " + bulletPos);
+                transform.position = bulletPos;
+                // if (bulletPos != targetPosition)
+                // {
+                //     lastPosition = transform.position;
+                //     targetPosition = bulletPos;
+                //     lerpStartTime = Time.time;
+                // }
+                // this.transform.position = Vector2.Lerp(
+                //     lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
                 Debug.Log("Client Bullet: " + globalState.BulletStates[State.BulletID].Position);
             }
 

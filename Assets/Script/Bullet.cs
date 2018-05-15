@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour {
         float distance = Time.fixedDeltaTime * Constants.BulletSpeed;
         float x = this.State.Position.x;
         float y = this.State.Position.y;
-        Debug.Log("before:" + transform.position);
+        // Debug.Log("before:" + transform.position);
         switch (State.Direction)
         {
             case Direction.Up:
@@ -49,11 +49,17 @@ public class Bullet : MonoBehaviour {
             default:
                 break;
         }
-        Debug.Log("after:" + transform.position);
+        // Debug.Log("after:" + transform.position);
         ServerLogic
             .GlobalState
             .BulletStates[State.BulletID]
             .Position = transform.position;
+
+        // destroy bullet if out of range
+        if (transform.position.x > 100f || transform.position.x < -100f ||
+            transform.position.y > 100f || transform.position.y < -100f) {
+            ServerLogic.GlobalState.BulletStates.Remove(State.BulletID);
+        }
     }
 
     public void OnCollisionEnter2D(Collision2D collision)

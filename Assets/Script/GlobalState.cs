@@ -23,7 +23,7 @@ public class GlobalState : MessageBase {
 		}
 		// add new bullets
         foreach (var bulletState in stateChange.BulletsCreated) {
-            BulletStates[bulletState.BulletID] = bulletState;
+			BulletStates[bulletState.BulletID] = bulletState;
         }
     }
 

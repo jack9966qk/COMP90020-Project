@@ -22,43 +22,32 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
         if (StateManager != null)
         {
-            if (!StateManager.GetApproxState().LocalStates.ContainsKey(State.PlayerID))
-            {
+            if (!StateManager.GetApproxState().LocalStates.ContainsKey(State.PlayerID)) {
                 GameController.PlayerDict.Remove(State.PlayerID);
                 Destroy(this.gameObject);
-            }
-            else
-            {
+            } else {
                 // player movement
                 float distance = Time.fixedDeltaTime * Constants.PlayerSpeed;
-                if (Input.GetKey(KeyCode.UpArrow))
-                {
+                if (Input.GetKey(KeyCode.UpArrow)) {
                     Vector2 pos = move(Direction.Up, distance);
                     StateManager.Move(pos, Direction.Up);
                     Debug.Log(pos);
-                }
-                else if (Input.GetKey(KeyCode.DownArrow))
-                {
+                } else if (Input.GetKey(KeyCode.DownArrow)) {
                     Vector2 pos = move(Direction.Down, distance);
                     StateManager.Move(pos, Direction.Down);
                     Debug.Log(pos);
-                }
-                else if (Input.GetKey(KeyCode.LeftArrow))
-                {
+                } else if (Input.GetKey(KeyCode.LeftArrow)) {
                     Vector2 pos = move(Direction.Left, distance);
                     StateManager.Move(pos, Direction.Left);
                     Debug.Log(pos);
-                }
-                else if (Input.GetKey(KeyCode.RightArrow))
-                {
+                } else if (Input.GetKey(KeyCode.RightArrow)) {
                     Vector2 pos = move(Direction.Right, distance);
                     StateManager.Move(pos, Direction.Right);
                     Debug.Log(pos);
                 }
 
                 // shoot bullet
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
+                if (Input.GetKeyDown(KeyCode.Space)) {
                     BulletState bulletState = new BulletState
                     {
                         Direction = State.Orientation,
@@ -69,15 +58,16 @@ public class PlayerController : MonoBehaviour {
                     StateManager.ShootBullet(bulletState);
                 }
 
-            // update GameObject
-            var playerPos = State.Position;
-            if (playerPos != targetPosition) {
-                lastPosition = transform.position;
-                targetPosition = playerPos;
-                lerpStartTime = Time.time;
-            }
-            this.transform.position = Vector2.Lerp(
-                lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
+                // update GameObject
+                var playerPos = State.Position;
+                transform.position = playerPos;
+                // if (playerPos != targetPosition) {
+                //     lastPosition = transform.position;
+                //     targetPosition = playerPos;
+                //     lerpStartTime = Time.time;
+                // }
+                // this.transform.position = Vector2.Lerp(
+                //     lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
 
                 switch (State.Orientation)
                 {
@@ -97,8 +87,7 @@ public class PlayerController : MonoBehaviour {
                         break;
                 }
 
-                if (!State.IsAlive)
-                {
+                if (!State.IsAlive) {
                     this.gameObject.SetActive(false);
                 }
             }

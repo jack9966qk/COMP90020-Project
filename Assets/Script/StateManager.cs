@@ -56,8 +56,7 @@ public class StateManager : MonoBehaviour {
         
 	public void Move(Vector2 pos, Direction orientation) {
         SetPID();
-        StateChange update = new StateChange
-        {
+        StateChange update = new StateChange {
             NewPosition = pos,
             NewOrientation = orientation
         };
@@ -99,29 +98,24 @@ public class StateManager : MonoBehaviour {
         //var existingBullets = GlobalState.BulletStates;
         //var newBullets = serverState.BulletStates;
         //remove old items from updateHistory 
-        while (updateHistory.Count > 0 && updateHistory.Peek().TimeStamp.x < logictime.x)
-        {
+        while (updateHistory.Count > 0 && updateHistory.Peek().TimeStamp.x < logictime.x) {
             updateHistory.Dequeue();
         }
 
         //rebuild State
-        foreach (BufferItem update in updateHistory)
-        {
+        foreach (BufferItem update in updateHistory) {
+            Debug.Log(update.TimeStamp);
             serverState.ApplyStateChange(PID.Value, update.Update);
-        }
-        if (GlobalState == null)
-        {
+        } if (GlobalState == null) {
             var playerIds = serverState.LocalStates.Keys;
             GameController.Initialise(playerIds);
         }
         //Snapshot Interpolation goes here ------------------------------
         GlobalState = serverState;
-
-
     }
 
     public void SetPID() {
-        if(PID == null) {
+        if (PID == null) {
             PID = ClientNetwork.getPID();
         }
     }
