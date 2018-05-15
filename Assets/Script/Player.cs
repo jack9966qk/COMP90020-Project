@@ -19,7 +19,14 @@ public class Player : MonoBehaviour {
 
     void updateTransform() {
         if (State == null) return;
-        // transform.position = State.Position;
+        if (State.HP < Constants.PlayerHP && State.HP > (Constants.PlayerHP / 2))
+        {
+            this.gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
+        else if (State.HP <= (Constants.PlayerHP / 2))
+        {
+            this.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+        }
         var playerPos = State.Position;
         if (playerPos != targetPosition) {
             lastPosition = transform.position;

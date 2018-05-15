@@ -16,7 +16,7 @@ public class ServerLogic : MonoBehaviour {
 				PlayerState = new PlayerState {
 					Position = new Vector2(0, 0),
 					Orientation = Direction.Up,
-					HP = 100f
+					HP = Constants.PlayerHP
 				}
 			};
 			var player = Instantiate(PlayerPrefab, new Vector3(), new Quaternion());

@@ -26,6 +26,15 @@ public class PlayerController : MonoBehaviour {
                 GameController.PlayerDict.Remove(State.PlayerID);
                 Destroy(this.gameObject);
             } else {
+                if (State.HP < Constants.PlayerHP && State.HP > (Constants.PlayerHP / 2))
+                {
+                    this.gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+                }
+                else if(State.HP <= (Constants.PlayerHP / 2))
+                {
+                    this.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                }
+
                 // player movement
                 float distance = Time.deltaTime * Constants.PlayerSpeed;
                 if (Input.GetKey(KeyCode.UpArrow)) {
