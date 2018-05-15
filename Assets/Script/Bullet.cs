@@ -4,31 +4,34 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
     public BulletState State = new BulletState();
-    public StateManager StateManager;
+    public ServerLogic ServerLogic;
+    int frame;
 	// Use this for initialization
 	void Start () {
-
-		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (StateManager != null)
-        {
-            if (!StateManager.GetApproxState().BulletStates.ContainsKey(State.BulletID))
-            {
+        
+        if (ServerLogic != null) {
+            var globalState = ServerLogic.GlobalState;
+            if (!globalState.BulletStates.ContainsKey(State.BulletID)) {
+                Debug.Log("Destroy");
                 Destroy(this.gameObject);
             }
+            // update position from state
+            this.transform.position = globalState.BulletStates[State.BulletID].Position;
+            Move();
         }
         if (State == null) return;
-        Move();
     }
 
     public void Move()
     {
         float distance = Time.fixedDeltaTime * Constants.BulletSpeed;
-        float x = this.transform.position.x;
-        float y = this.transform.position.y;
+        float x = this.State.Position.x;
+        float y = this.State.Position.y;
+        Debug.Log("before:" + transform.position);
         switch (State.Direction)
         {
             case Direction.Up:
@@ -46,5 +49,10 @@ public class Bullet : MonoBehaviour {
             default:
                 break;
         }
+        Debug.Log("after:" + transform.position);
+        ServerLogic
+            .GlobalState
+            .BulletStates[State.BulletID]
+            .Position = transform.position;
     }
 }

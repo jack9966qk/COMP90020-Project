@@ -20,7 +20,7 @@ public class BulletCollision : MonoBehaviour {
         if (collision.gameObject.tag.Equals("Player"))
         {
             int playerID = collision.gameObject.GetComponent<Player>().State.PlayerID;
-            int bulletID = transform.parent.gameObject.GetComponent<Bullet>().State.BulletID;
+            string bulletID = transform.parent.gameObject.GetComponent<Bullet>().State.BulletID;
             serverLogic.OnCollision(bulletID, playerID);
         }
     }

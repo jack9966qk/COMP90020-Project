@@ -7,9 +7,7 @@ public class ServerLogic : MonoBehaviour {
 	public GameObject BulletPrefab;
 
 	Dictionary<int, Player> players = new Dictionary<int, Player>();
-	Dictionary<int, Bullet> bullets = new Dictionary<int, Bullet>();
-
-	int bulletIdCounter = 0;
+	Dictionary<string, Bullet> bullets = new Dictionary<string, Bullet>();
 
 	public void Initialise(int numPlayers) {
 		var localStates = new Dictionary<int, LocalState>();
@@ -27,7 +25,7 @@ public class ServerLogic : MonoBehaviour {
 		}
 		GlobalState = new GlobalState {
 			LocalStates = localStates,
-			BulletStates = new Dictionary<int, BulletState>()
+			BulletStates = new Dictionary<string, BulletState>()
 		};
 	}
 
@@ -37,20 +35,18 @@ public class ServerLogic : MonoBehaviour {
 			var change = stateChanges[playerId];
 			// add bullets
 			foreach (BulletState bulletState in change.BulletsCreated) {
-				Debug.Log(bulletState.BulletID);
 				if (!bullets.ContainsKey(bulletState.BulletID)) {
 					// Init the bullets
-					var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
-					bulletState.BulletID = bulletIdCounter;
-					bulletIdCounter += 1;
+					var bullet = Instantiate(BulletPrefab, bulletState.Position, new Quaternion());
 					bullet.GetComponent<Bullet>().State = bulletState;
+					bullet.GetComponent<Bullet>().ServerLogic = this;
 					bullet.GetComponent<BulletCollision>().serverLogic = this;
 					bullets[bulletState.BulletID] = bullet.GetComponent<Bullet>();
+					GlobalState.BulletStates[bulletState.BulletID] = bulletState;
 				}
 			}
 			// update player position
 			var playerState = GlobalState.LocalStates[playerId].PlayerState;
-			Debug.Log(change.NewPosition);
 			if (change.NewPosition.HasValue) {
 				playerState.Position = change.NewPosition.Value;
 			}
@@ -61,7 +57,7 @@ public class ServerLogic : MonoBehaviour {
 		}
 	}
 
-	public void OnCollision(int bulletId, int playerId) {
+	public void OnCollision(string bulletId, int playerId) {
 		// apply damage to player
 		// var damage = Constants.BulletDamage;
 		GlobalState.LocalStates[playerId].PlayerState.Damage(Constants.BulletDamage);

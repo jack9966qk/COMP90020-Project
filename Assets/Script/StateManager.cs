@@ -15,10 +15,11 @@ public class StateManager : MonoBehaviour {
 	GlobalState GlobalState = null;
     public GameController GameController;
     private static int? PID = null;
-    public int BulletCounter = 0;
+
+    private static int bulletIdCounter = 0;
 
 	public GlobalState GetApproxState() {
-        Debug.Log("GlobalState: " + GlobalState.LocalStates[(int)PID].PlayerState.Position);
+        //Debug.Log("GlobalState: " + GlobalState.LocalStates[(int)PID].PlayerState.Position);
 		return GlobalState;
 	}
 
@@ -38,6 +39,8 @@ public class StateManager : MonoBehaviour {
 
 	public void ShootBullet(BulletState bullet) {
         SetPID();
+        bullet.BulletID = PID.Value.ToString() + "-" + bulletIdCounter.ToString();
+        bulletIdCounter += 1;
         var bulletsCreated = new HashSet<BulletState>();
         bulletsCreated.Add(bullet);
         StateChange update = new StateChange
@@ -45,6 +48,7 @@ public class StateManager : MonoBehaviour {
             BulletsCreated = bulletsCreated
         };
         update.BulletsCreated.Add(bullet);
+        Debug.Log("State manager receive bullet");
         //add bullet state to Global State
         ApplyStateChange(update);
     }

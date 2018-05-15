@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour {
     public GameObject PlayerPrefab;
     public GameObject BulletPrefab;
 
-    public Dictionary<int, GameObject> BulletDict = new Dictionary<int, GameObject>();
+    public Dictionary<string, GameObject> BulletDict = new Dictionary<string, GameObject>();
     public Dictionary<int, GameObject> PlayerDict = new Dictionary<int, GameObject>();
     //public PlayerController localPlayer = new PlayerController();
 
@@ -76,19 +76,16 @@ public class GameController : MonoBehaviour {
                 }
             }
             // Create bullets if not exists, update existing bullet State
-            foreach (int bulletID in GlobalState.BulletStates.Keys)
-            {
+            foreach (string bulletID in GlobalState.BulletStates.Keys) {
+                Debug.Log("Bullet ID: " + bulletID);
                 BulletState bulletState = GlobalState.BulletStates[bulletID];
-                if (!BulletDict.ContainsKey(bulletID))
-                {
-                    var bullet = Instantiate(BulletPrefab, new Vector3(), new Quaternion());
-                    bullet.GetComponent<Bullet>().State = bulletState;
-                    bullet.GetComponent<Bullet>().StateManager = StateManager;
+                if (!BulletDict.ContainsKey(bulletID)) {
+                    var bullet = Instantiate(BulletPrefab, bulletState.Position, new Quaternion());
+                    bullet.GetComponent<ClientBullet>().State = bulletState;
+                    bullet.GetComponent<ClientBullet>().StateManager = StateManager;
                     BulletDict.Add(bulletState.BulletID, bullet);
-                }
-                else
-                {
-                    BulletDict[bulletID].GetComponent<Bullet>().State = bulletState;
+                } else {
+                    BulletDict[bulletID].GetComponent<ClientBullet>().State = bulletState;
                 }
             }
         }

@@ -19,6 +19,7 @@ public class GlobalState : MessageBase {
         }
     }
 
+
 	public override void Serialize(NetworkWriter writer) {
 		writer.Write(LocalStates.Count);
 		foreach (var key in LocalStates.Keys) {
@@ -42,10 +43,10 @@ public class GlobalState : MessageBase {
 			locals[id] = state;
 		}
 
-		var bullets = new Dictionary<int, BulletState>();
+		var bullets = new Dictionary<string, BulletState>();
 		var numBullet = reader.ReadInt32();
 		for (var i = 0; i < numBullet; i++) {
-			var id = reader.ReadInt32();
+			var id = reader.ReadString();
 			var state = new BulletState();
 			state.Deserialize(reader);
 			bullets[id] = state;
