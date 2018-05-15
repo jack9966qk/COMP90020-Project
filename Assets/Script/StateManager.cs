@@ -18,6 +18,7 @@ public class StateManager : MonoBehaviour {
 
 	public GlobalState GetApproxState() {
         //Debug.Log("GlobalState: " + GlobalState.LocalStates[(int)PID].PlayerState.Position);
+        GlobalState.DebugBulletStates();
 		return GlobalState;
 	}
 
