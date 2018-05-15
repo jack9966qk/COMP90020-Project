@@ -70,6 +70,7 @@ public class GameController : MonoBehaviour {
                     }
                     else
                     {
+                        Debug.Log("Game Controller: " + playerState.Position);
                         PlayerDict[playerID].GetComponent<Player>().State = playerState;
                     }                  
 

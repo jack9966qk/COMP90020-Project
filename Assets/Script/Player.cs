@@ -18,7 +18,7 @@ public class Player : MonoBehaviour {
 	}
 
     void updateTransform() {
-        if (State == null) return;
+        //if (State == null) return;
         if (State.HP < Constants.PlayerHP && State.HP > (Constants.PlayerHP / 2))
         {
             this.gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
@@ -28,13 +28,16 @@ public class Player : MonoBehaviour {
             this.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
         }
         var playerPos = State.Position;
-        if (playerPos != targetPosition) {
-            lastPosition = transform.position;
-            targetPosition = playerPos;
-            lerpStartTime = Time.time;
-        }
-        this.transform.position = Vector2.Lerp(
-            lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
+        transform.position = State.Position;
+        Debug.Log(State.Position);
+        Debug.Log(transform.position);
+        //if (playerPos != targetPosition) {
+        //    lastPosition = transform.position;
+        //    targetPosition = playerPos;
+        //    lerpStartTime = Time.time;
+        //}
+        //this.transform.position = Vector2.Lerp(
+        //    lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
 
         switch (State.Orientation) {
             case Direction.Up:
@@ -63,6 +66,7 @@ public class Player : MonoBehaviour {
                 Destroy(this.gameObject);
                 return;
             }
+            Debug.Log("Player: " + State.Position);
             updateTransform();
         } else {
             // is server side player
