@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
                 Destroy(this.gameObject);
             } else {
                 // player movement
-                float distance = Time.fixedDeltaTime * Constants.PlayerSpeed;
+                float distance = Time.deltaTime * Constants.PlayerSpeed;
                 if (Input.GetKey(KeyCode.UpArrow)) {
                     Vector2 pos = move(Direction.Up, distance);
                     StateManager.Move(pos, Direction.Up);
@@ -48,8 +48,7 @@ public class PlayerController : MonoBehaviour {
 
                 // shoot bullet
                 if (Input.GetKeyDown(KeyCode.Space)) {
-                    BulletState bulletState = new BulletState
-                    {
+                    BulletState bulletState = new BulletState {
                         Direction = State.Orientation,
                         Position = InitialBulletPosition()
                     };
@@ -69,8 +68,7 @@ public class PlayerController : MonoBehaviour {
                 // this.transform.position = Vector2.Lerp(
                 //     lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
 
-                switch (State.Orientation)
-                {
+                switch (State.Orientation) {
                     case Direction.Up:
                         transform.rotation = Quaternion.Euler(0, 0, 0);
                         break;
@@ -92,21 +90,17 @@ public class PlayerController : MonoBehaviour {
                 }
             }
 
-
-
         }
 
     }
 
     // The initial position of bullet, which is 1 cm away from the player in the direction player is facing
-    public Vector2 InitialBulletPosition()
-    {
+    public Vector2 InitialBulletPosition() {
         Vector2 bulletPosition = State.Position;
         float distance = 1;
         float x = this.State.Position.x;
         float y = this.State.Position.y;
-        switch (this.State.Orientation)
-        {
+        switch (this.State.Orientation) {
             case Direction.Up:
                 bulletPosition = new Vector2(x, y + distance);
                 break;
@@ -126,13 +120,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     // Calculate the next position of the player
-    public Vector2 move(Direction direction, float distance)
-    {
+    public Vector2 move(Direction direction, float distance) {
         float x = this.State.Position.x;
         float y = this.State.Position.y;
         Vector2 pos = new Vector2();
-        switch (direction)
-        {
+        switch (direction) {
             case Direction.Up:
                 pos = new Vector2(x, y + distance);
                 break;
@@ -149,7 +141,6 @@ public class PlayerController : MonoBehaviour {
                 break;
         }
         return pos;
-
     }
 
 }
