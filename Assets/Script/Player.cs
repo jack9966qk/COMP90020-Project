@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
     public GameController GameController;
 
     float lerpStartTime;
-    float lerpTime = 0.5f;
+    float lerpTime = 0.1f;
     Vector2 lastPosition = new Vector2();
     Vector2 targetPosition = new Vector2();
 
@@ -16,80 +16,52 @@ public class Player : MonoBehaviour {
 	void Start () {
 		
 	}
+
+    void updateTransform() {
+        if (State == null) return;
+        // transform.position = State.Position;
+        var playerPos = State.Position;
+        if (playerPos != targetPosition) {
+            lastPosition = transform.position;
+            targetPosition = playerPos;
+            lerpStartTime = Time.time;
+        }
+        this.transform.position = Vector2.Lerp(
+            lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
+
+        switch (State.Orientation) {
+            case Direction.Up:
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case Direction.Down:
+                transform.rotation = Quaternion.Euler(0, 0, 180);
+                break;
+            case Direction.Left:
+                transform.rotation = Quaternion.Euler(0, 0, 90);
+                break;
+            case Direction.Right:
+                transform.rotation = Quaternion.Euler(0, 0, 270);
+                break;
+            default:
+                break;
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
         if (StateManager != null) {
+            // is client side player
             if (!StateManager.GetApproxState().LocalStates.ContainsKey(State.PlayerID)) {
                 GameController.PlayerDict.Remove(State.PlayerID);
                 Destroy(this.gameObject);
+                return;
             }
-            else
-            {
-                // update position
-                if (State == null) return;
-                var playerPos2 = State.Position;
-                if (playerPos2 != targetPosition)
-                {
-                    lastPosition = transform.position;
-                    targetPosition = playerPos2;
-                    lerpStartTime = Time.time;
-                }
-                this.transform.position = Vector2.Lerp(
-                    lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
-
-                switch (State.Orientation)
-                {
-                    case Direction.Up:
-                        transform.rotation = Quaternion.Euler(0, 0, 0);
-                        break;
-                    case Direction.Down:
-                        transform.rotation = Quaternion.Euler(0, 0, 180);
-                        break;
-                    case Direction.Left:
-                        transform.rotation = Quaternion.Euler(0, 0, 90);
-                        break;
-                    case Direction.Right:
-                        transform.rotation = Quaternion.Euler(0, 0, 270);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        else
-        {
+            updateTransform();
+        } else {
+            // is server side player
             // update position
-            if (State == null) return;
-            var playerPos = State.Position;
-            if (playerPos != targetPosition) {
-                lastPosition = transform.position;
-                targetPosition = playerPos;
-                lerpStartTime = Time.time;
-            }
-            this.transform.position = Vector2.Lerp(
-                lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
-
-            switch (State.Orientation)
-            {
-                case Direction.Up:
-                    transform.rotation = Quaternion.Euler(0, 0, 0);
-                    break;
-                case Direction.Down:
-                    transform.rotation = Quaternion.Euler(0, 0, 180);
-                    break;
-                case Direction.Left:
-                    transform.rotation = Quaternion.Euler(0, 0, 90);
-                    break;
-                case Direction.Right:
-                    transform.rotation = Quaternion.Euler(0, 0, 270);
-                    break;
-                default:
-                    break;
-            }
-
+            updateTransform();
         }
-
 
         if (!State.IsAlive) {
             this.gameObject.SetActive(false);

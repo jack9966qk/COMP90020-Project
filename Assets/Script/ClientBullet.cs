@@ -8,7 +8,7 @@ public class ClientBullet : MonoBehaviour {
     public StateManager StateManager;
 
     float lerpStartTime;
-    float lerpTime = 0.5f;
+    float lerpTime = 0.1f;
     Vector2 lastPosition = new Vector2();
     Vector2 targetPosition = new Vector2();
 
@@ -33,14 +33,14 @@ public class ClientBullet : MonoBehaviour {
                 var bulletPos = globalState.BulletStates[State.BulletID].Position;
              //   Debug.Log("bullet: " + bulletPos);
                 transform.position = bulletPos;
-                // if (bulletPos != targetPosition)
-                // {
-                //     lastPosition = transform.position;
-                //     targetPosition = bulletPos;
-                //     lerpStartTime = Time.time;
-                // }
-                // this.transform.position = Vector2.Lerp(
-                //     lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
+                if (bulletPos != targetPosition)
+                {
+                    lastPosition = transform.position;
+                    targetPosition = bulletPos;
+                    lerpStartTime = Time.time;
+                }
+                this.transform.position = Vector2.Lerp(
+                    lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
             //    Debug.Log("Client Bullet: " + globalState.BulletStates[State.BulletID].Position);
             }
 
