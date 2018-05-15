@@ -55,7 +55,6 @@ public class PlayerController : MonoBehaviour {
                 // shoot bullet
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-
                     BulletState bulletState = new BulletState
                     {
                         Direction = State.Orientation,
