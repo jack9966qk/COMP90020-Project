@@ -27,17 +27,22 @@ public class ClientBullet : MonoBehaviour {
                 Debug.Log("Destroy");
                 Destroy(this.gameObject);
             }
-            // update position from state
-            var bulletPos = globalState.BulletStates[State.BulletID].Position;
-            if (bulletPos != targetPosition) {
-                lastPosition = transform.position;
-                targetPosition = bulletPos;
-                lerpStartTime = Time.time;
+            else
+            {
+                // update position from state
+                var bulletPos = globalState.BulletStates[State.BulletID].Position;
+                if (bulletPos != targetPosition)
+                {
+                    lastPosition = transform.position;
+                    targetPosition = bulletPos;
+                    lerpStartTime = Time.time;
+                }
+                this.transform.position = Vector2.Lerp(
+                    lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
+                this.transform.position = globalState.BulletStates[State.BulletID].Position;
+                Debug.Log("Client Bullet: " + globalState.BulletStates[State.BulletID].Position);
             }
-            this.transform.position = Vector2.Lerp(
-                lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
-            this.transform.position = globalState.BulletStates[State.BulletID].Position;
-            Debug.Log("Client Bullet: "+globalState.BulletStates[State.BulletID].Position);
+
         }
         if (State == null) return;
     }

@@ -18,14 +18,13 @@ public class StateManager : MonoBehaviour {
 
 	public GlobalState GetApproxState() {
         //Debug.Log("GlobalState: " + GlobalState.LocalStates[(int)PID].PlayerState.Position);
-        GlobalState.DebugBulletStates();
+        //GlobalState.DebugBulletStates();
 		return GlobalState;
 	}
 
     // call when local player moves
         
 	public void Move(Vector2 pos, Direction orientation) {
-        Debug.Log(pos.x + ";" + pos.y);
         SetPID();
         StateChange update = new StateChange
         {

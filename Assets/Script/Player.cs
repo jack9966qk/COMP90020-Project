@@ -24,35 +24,73 @@ public class Player : MonoBehaviour {
                 GameController.PlayerDict.Remove(State.PlayerID);
                 Destroy(this.gameObject);
             }
+            else
+            {
+                // update position
+                if (State == null) return;
+                var playerPos2 = State.Position;
+                if (playerPos2 != targetPosition)
+                {
+                    lastPosition = transform.position;
+                    targetPosition = playerPos2;
+                    lerpStartTime = Time.time;
+                }
+                this.transform.position = Vector2.Lerp(
+                    lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
+
+                switch (State.Orientation)
+                {
+                    case Direction.Up:
+                        transform.rotation = Quaternion.Euler(0, 0, 0);
+                        break;
+                    case Direction.Down:
+                        transform.rotation = Quaternion.Euler(0, 0, 180);
+                        break;
+                    case Direction.Left:
+                        transform.rotation = Quaternion.Euler(0, 0, 90);
+                        break;
+                    case Direction.Right:
+                        transform.rotation = Quaternion.Euler(0, 0, 270);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        else
+        {
+            // update position
+            if (State == null) return;
+            var playerPos = State.Position;
+            if (playerPos != targetPosition)
+            {
+                lastPosition = transform.position;
+                targetPosition = playerPos;
+                lerpStartTime = Time.time;
+            }
+            this.transform.position = Vector2.Lerp(
+                lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
+
+            switch (State.Orientation)
+            {
+                case Direction.Up:
+                    transform.rotation = Quaternion.Euler(0, 0, 0);
+                    break;
+                case Direction.Down:
+                    transform.rotation = Quaternion.Euler(0, 0, 180);
+                    break;
+                case Direction.Left:
+                    transform.rotation = Quaternion.Euler(0, 0, 90);
+                    break;
+                case Direction.Right:
+                    transform.rotation = Quaternion.Euler(0, 0, 270);
+                    break;
+                default:
+                    break;
+            }
+
         }
 
-        // update position
-        if (State == null) return;
-        var playerPos = State.Position;
-        if (playerPos != targetPosition) {
-            lastPosition = transform.position;
-            targetPosition = playerPos;
-            lerpStartTime = Time.time;
-        }
-        this.transform.position = Vector2.Lerp(
-            lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
-
-        switch (State.Orientation) {
-            case Direction.Up:
-                transform.rotation = Quaternion.Euler(0, 0, 0);
-                break;
-            case Direction.Down:
-                transform.rotation = Quaternion.Euler(0, 0, 180);
-                break;
-            case Direction.Left:
-                transform.rotation = Quaternion.Euler(0, 0, 90);
-                break;
-            case Direction.Right:
-                transform.rotation = Quaternion.Euler(0, 0, 270);
-                break;
-            default:
-                break;
-        }
 
         if (!State.IsAlive) {
             this.gameObject.SetActive(false);
