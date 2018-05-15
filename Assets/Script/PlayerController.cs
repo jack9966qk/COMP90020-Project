@@ -7,6 +7,10 @@ public class PlayerController : MonoBehaviour {
     public PlayerState State = new PlayerState();
     public GameController GameController;
     private static int FireRate = 5;
+    float lerpStartTime;
+    float lerpTime = 0.5f;
+    Vector2 lastPosition = new Vector2();
+    Vector2 targetPosition = new Vector2();
 
 	// Use this for initialization
 	void Start () {
@@ -65,8 +69,15 @@ public class PlayerController : MonoBehaviour {
                     StateManager.ShootBullet(bulletState);
                 }
 
-                // update GameObject
-                this.transform.position = State.Position;
+            // update GameObject
+            var playerPos = State.Position;
+            if (playerPos != targetPosition) {
+                lastPosition = transform.position;
+                targetPosition = playerPos;
+                lerpStartTime = Time.time;
+            }
+            this.transform.position = Vector2.Lerp(
+                lastPosition, State.Position, (Time.deltaTime - lerpStartTime) / lerpTime);
 
                 switch (State.Orientation)
                 {

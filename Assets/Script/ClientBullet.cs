@@ -6,6 +6,12 @@ public class ClientBullet : MonoBehaviour {
     public BulletState State = new BulletState();
     public GameController GameController;
     public StateManager StateManager;
+
+    float lerpStartTime;
+    float lerpTime = 0.5f;
+    Vector2 lastPosition = new Vector2();
+    Vector2 targetPosition = new Vector2();
+
 	// Use this for initialization
 	void Start () {
         
@@ -21,13 +27,17 @@ public class ClientBullet : MonoBehaviour {
                 Debug.Log("Destroy");
                 Destroy(this.gameObject);
             }
-            else
-            {
-                // update position from state
-                this.transform.position = globalState.BulletStates[State.BulletID].Position;
-                Debug.Log("Client Bullet: " + globalState.BulletStates[State.BulletID].Position);
+            // update position from state
+            var bulletPos = globalState.BulletStates[State.BulletID].Position;
+            if (bulletPos != targetPosition) {
+                lastPosition = transform.position;
+                targetPosition = bulletPos;
+                lerpStartTime = Time.time;
             }
-
+            this.transform.position = Vector2.Lerp(
+                lastPosition, State.Position, (Time.deltaTime - lerpStartTime) / lerpTime);
+            this.transform.position = globalState.BulletStates[State.BulletID].Position;
+            Debug.Log("Client Bullet: "+globalState.BulletStates[State.BulletID].Position);
         }
         if (State == null) return;
     }
