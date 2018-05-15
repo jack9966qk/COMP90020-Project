@@ -85,6 +85,7 @@ public class GameController : MonoBehaviour {
                     BulletDict.Add(bulletState.BulletID, bullet);
                 } else {
                     BulletDict[bulletID].GetComponent<ClientBullet>().State = bulletState;
+                    Debug.Log("Game Controller:" +bulletState.Position);
                 }
             }
         }

@@ -5,7 +5,6 @@ using UnityEngine;
 public class ClientBullet : MonoBehaviour {
     public BulletState State = new BulletState();
     public StateManager StateManager;
-    int frame;
 	// Use this for initialization
 	void Start () {
         
@@ -22,6 +21,7 @@ public class ClientBullet : MonoBehaviour {
             }
             // update position from state
             this.transform.position = globalState.BulletStates[State.BulletID].Position;
+            Debug.Log("Client Bullet: "+globalState.BulletStates[State.BulletID].Position);
         }
         if (State == null) return;
     }

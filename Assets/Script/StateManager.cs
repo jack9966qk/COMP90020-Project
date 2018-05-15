@@ -9,9 +9,7 @@ public class StateManager : MonoBehaviour {
         public StateChange Update;
     }
     Vector2 logictime = new Vector2(0, 0);
-    public GameObject PlayerPrefab;
-    public GameObject BulletPrefab;
-    private Queue<BufferItem> updateHistory;
+    private Queue<BufferItem> updateHistory = new Queue<BufferItem>();
 	GlobalState GlobalState = null;
     public GameController GameController;
     private static int? PID = null;
@@ -68,22 +66,28 @@ public class StateManager : MonoBehaviour {
 
 	public void UpdateServerState(GlobalState serverState, Vector2 logictime) {
         // TODO..
-        var existingBullets = GlobalState.BulletStates;
-        var newBullets = serverState.BulletStates;
+        //var existingBullets = GlobalState.BulletStates;
+        //var newBullets = serverState.BulletStates;
         //remove old items from updateHistory 
-        while (updateHistory.Peek().TimeStamp.x < logictime.x) {
+        while (updateHistory.Count > 0 && updateHistory.Peek().TimeStamp.x < logictime.x)
+        {
             updateHistory.Dequeue();
         }
+
         //rebuild State
-        foreach (BufferItem update in updateHistory) {
+        foreach (BufferItem update in updateHistory)
+        {
             serverState.ApplyStateChange(PID.Value, update.Update);
         }
-        if (GlobalState == null) {
+        if (GlobalState == null)
+        {
             var playerIds = serverState.LocalStates.Keys;
             GameController.Initialise(playerIds);
         }
         GlobalState = serverState;
-	}
+
+
+    }
 
     public void SetPID() {
         if(PID == null) {
