@@ -7,10 +7,6 @@ public class PlayerController : MonoBehaviour {
     public PlayerState State = new PlayerState();
     public GameController GameController;
     private static int FireRate = 5;
-    float lerpStartTime;
-    float lerpTime = 0.5f;
-    Vector2 lastPosition = new Vector2();
-    Vector2 targetPosition = new Vector2();
 
 	// Use this for initialization
 	void Start () {
@@ -40,19 +36,19 @@ public class PlayerController : MonoBehaviour {
                 if (Input.GetKey(KeyCode.UpArrow)) {
                     Vector2 pos = move(Direction.Up, distance);
                     StateManager.Move(pos, Direction.Up);
-                    // Debug.Log(pos);
+                    
                 } else if (Input.GetKey(KeyCode.DownArrow)) {
                     Vector2 pos = move(Direction.Down, distance);
                     StateManager.Move(pos, Direction.Down);
-                    // Debug.Log(pos);
+                    
                 } else if (Input.GetKey(KeyCode.LeftArrow)) {
                     Vector2 pos = move(Direction.Left, distance);
                     StateManager.Move(pos, Direction.Left);
-                    // Debug.Log(pos);
+                    
                 } else if (Input.GetKey(KeyCode.RightArrow)) {
                     Vector2 pos = move(Direction.Right, distance);
                     StateManager.Move(pos, Direction.Right);
-                    // Debug.Log(pos);
+                    
                 }
 
                 // shoot bullet
@@ -61,21 +57,14 @@ public class PlayerController : MonoBehaviour {
                         Direction = State.Orientation,
                         Position = InitialBulletPosition()
                     };
-                //    Debug.Log("Bullet Position: " + InitialBulletPosition());
-                //    Debug.Log("bullet sended");
+                
+                
                     StateManager.ShootBullet(bulletState);
                 }
 
                 // update GameObject
                 var playerPos = State.Position;
                 transform.position = playerPos;
-                // if (playerPos != targetPosition) {
-                //     lastPosition = transform.position;
-                //     targetPosition = playerPos;
-                //     lerpStartTime = Time.time;
-                // }
-                // this.transform.position = Vector2.Lerp(
-                //     lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
 
                 switch (State.Orientation) {
                     case Direction.Up:

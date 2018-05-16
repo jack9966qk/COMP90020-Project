@@ -18,14 +18,11 @@ public class Bullet : MonoBehaviour {
             if (!globalState.BulletStates.ContainsKey(State.BulletID)) {
                 Debug.Log("Destroy");
                 Destroy(this.gameObject);
-            }
-            else
-            {
+            } else {
                 // update position from state
                 this.transform.position = globalState.BulletStates[State.BulletID].Position;
                 Move();
             }
-
         }
         if (State == null) return;
     }
@@ -35,7 +32,7 @@ public class Bullet : MonoBehaviour {
         float distance = Time.deltaTime * Constants.BulletSpeed;
         float x = this.State.Position.x;
         float y = this.State.Position.y;
-        // Debug.Log("before:" + transform.position);
+        
         switch (State.Direction)
         {
             case Direction.Up:
@@ -53,7 +50,7 @@ public class Bullet : MonoBehaviour {
             default:
                 break;
         }
-        // Debug.Log("after:" + transform.position);
+        
         ServerLogic
             .GlobalState
             .BulletStates[State.BulletID]

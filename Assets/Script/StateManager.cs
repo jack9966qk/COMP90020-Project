@@ -12,10 +12,10 @@ public class StateManager : MonoBehaviour {
     private Queue<BufferItem> updateHistory = new Queue<BufferItem>();
 	GlobalState GlobalState {
         get {
-           // Debug.Log("get global state");
+           
             return _globalState;
         } set {
-          //  Debug.Log("set global state");
+          
             _globalState = value;
         }
     }
@@ -27,19 +27,19 @@ public class StateManager : MonoBehaviour {
     private static int bulletIdCounter = 0;
 
 	public GlobalState GetApproxState() {
-        // Debug.Log("GetApproxState");
-        //  Debug.Log(GlobalState.LocalStates.Count);
+        
+        
   
       /*  foreach (var pair in GlobalState.LocalStates) {
             if (pair.Key == PID) continue;
-           // Debug.Log(GlobalState.LocalStates[pair.Key].PlayerState.Position);
+           
         }*/
         return GlobalState;
 	}
 
     void Update() {
         //update all bullets
-       // Debug.Log("Update start");
+       
         if(PID == null) PID = ClientNetwork.getPID();
         if (GlobalState != null) {
             GlobalState currentState = GlobalState;
@@ -70,7 +70,7 @@ public class StateManager : MonoBehaviour {
                 if (PID == null) break;
                 if (pair.Key == PID) continue;
                 var playerState = pair.Value.PlayerState;
-               // Debug.Log("Stationary? " + playerState.Stationary);
+               
                 if (playerState.Stationary != true) {
                     // player movement
                     float distance = Time.deltaTime * Constants.PlayerSpeed;
@@ -94,11 +94,11 @@ public class StateManager : MonoBehaviour {
                     }
                 }
                 GlobalState.LocalStates[pair.Key].PlayerState = playerState;
-                //Debug.Log(GlobalState.LocalStates[pair.Key].PlayerState.Position);
+                
             }
            // GlobalState.DebugBulletStates();
         }
-       // Debug.Log("Update End");
+       
     }
 
     // call when local player moves
@@ -124,7 +124,7 @@ public class StateManager : MonoBehaviour {
             BulletsCreated = bulletsCreated
         };
         update.BulletsCreated.Add(bullet);
-        //Debug.Log("State manager receive bullet");
+        
         //add bullet state to Global State
         ApplyStateChange(update);
     }
@@ -192,9 +192,9 @@ public class StateManager : MonoBehaviour {
 
 
         //rebuild State
-        //Debug.Log("future predictions" + updateHistory.Count);
+        
         foreach (BufferItem update in updateHistory) {
-            // Debug.Log(update.TimeStamp);
+            
             serverState.ApplyStateChange(PID.Value, update.Update);
         } if (GlobalState == null) {
             var playerIds = serverState.LocalStates.Keys;

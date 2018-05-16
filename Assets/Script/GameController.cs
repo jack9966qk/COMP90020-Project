@@ -13,9 +13,7 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-
-		
+        		
 	}
 
     public void Initialise(IEnumerable<int> playerIDs)
@@ -70,7 +68,7 @@ public class GameController : MonoBehaviour {
                     }
                     else
                     {
-                      //  Debug.Log("Game Controller: " + playerState.Position);
+                      
                         PlayerDict[playerID].GetComponent<Player>().State = playerState;
                     }                  
 
@@ -78,18 +76,18 @@ public class GameController : MonoBehaviour {
             }
             // Create bullets if not exists, update existing bullet State
             foreach (string bulletID in GlobalState.BulletStates.Keys) {
-              //  Debug.Log("Bullet ID: " + bulletID);
+              
                 BulletState bulletState = GlobalState.BulletStates[bulletID];
                 if (!BulletDict.ContainsKey(bulletID)) {
                     var bullet = Instantiate(BulletPrefab, bulletState.Position, new Quaternion());
-                //    Debug.Log("game controller: " + bulletState.Position);
+                
                     bullet.GetComponent<ClientBullet>().State = bulletState;
                     bullet.GetComponent<ClientBullet>().StateManager = StateManager;
                     bullet.GetComponent<ClientBullet>().GameController = this;
                     BulletDict.Add(bulletState.BulletID, bullet);
                 } else {
                     BulletDict[bulletID].GetComponent<ClientBullet>().State = bulletState;
-                //    Debug.Log("Game Controller Bullet:" +bulletState.Position);
+                
                 }
             }
         }

@@ -6,37 +6,26 @@ public class Player : MonoBehaviour {
     public PlayerState State;
     public StateManager StateManager;
     public GameController GameController;
-
-    float lerpStartTime;
-    float lerpTime = 0.1f;
-    Vector2 lastPosition = new Vector2();
-    Vector2 targetPosition = new Vector2();
+    Interpolator Interpolator = new Interpolator();
 
 	// Use this for initialization
 	void Start () {
 		
 	}
 
-    void updateTransform() {
-        //if (State == null) return;
-        if (State.HP < Constants.PlayerHP && State.HP > (Constants.PlayerHP / 2))
-        {
+    void updateFromState(bool interpolate) {
+        // display different colors based on HP
+        if (State.HP < Constants.PlayerHP && State.HP > (Constants.PlayerHP / 2)) {
             this.gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
         }
-        else if (State.HP <= (Constants.PlayerHP / 2))
-        {
+        else if (State.HP <= (Constants.PlayerHP / 2)) {
             this.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
         }
+        
         var playerPos = State.Position;
-        transform.position = State.Position;
-
-        //if (playerPos != targetPosition) {
-        //    lastPosition = transform.position;
-        //    targetPosition = playerPos;
-        //    lerpStartTime = Time.time;
-        //}
-        //this.transform.position = Vector2.Lerp(
-        //    lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
+        transform.position = interpolate ?
+            Interpolator.GetPosition(transform.position, playerPos) :
+            playerPos;
 
         switch (State.Orientation) {
             case Direction.Up:
@@ -65,12 +54,12 @@ public class Player : MonoBehaviour {
                 Destroy(this.gameObject);
                 return;
             }
-            //Debug.Log("Player: " + State.Position);
-            updateTransform();
+            
+            updateFromState(true);
         } else {
             // is server side player
             // update position
-            updateTransform();
+            updateFromState(false);
         }
 
         if (!State.IsAlive) {

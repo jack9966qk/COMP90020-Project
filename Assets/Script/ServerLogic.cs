@@ -32,7 +32,6 @@ public class ServerLogic : MonoBehaviour {
 	}
 
 	public void ApplyStateChange(Dictionary<int, StateChange> stateChanges) {
-		Debug.Log(stateChanges.Count);
 		foreach (var playerId in stateChanges.Keys) {
 			var change = stateChanges[playerId];
 			// add bullets
@@ -49,13 +48,11 @@ public class ServerLogic : MonoBehaviour {
 			// update player position
 			var playerState = GlobalState.LocalStates[playerId].PlayerState;
 
-           // Debug.Log(playerId + ": old: " + playerState.Position + ", new: " + change.NewPosition.Value);
+           
             if (change.NewPosition.HasValue) {
                     playerState.Stationary = false;
 				playerState.Position = change.NewPosition.Value;
-			}
-            else {
-                Debug.Log("here");
+			} else {
                 playerState.Stationary = true;
             }
 			if (change.NewOrientation.HasValue) {

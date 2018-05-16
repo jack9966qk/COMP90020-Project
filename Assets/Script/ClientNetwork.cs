@@ -65,15 +65,10 @@ public class ClientNetwork : MonoBehaviour {
 	static void OnNewGlobalState(NetworkMessage msg) {
 		// receive global state
 		var globalStateMsg = msg.ReadMessage<GlobalStateMessage>();
-        foreach(KeyValuePair<int, LocalState> playerState in globalStateMsg.GlobalState.LocalStates){
-            Debug.Log("stationary? network= " + playerState.Value.PlayerState.Stationary);
-        }
 		StateManager.UpdateServerState(
-
 			globalStateMsg.GlobalState,
 			globalStateMsg.LogicTime);
-		//Debug.Log("New global state received");
-
+		
 		client.Send(
 			NetworkMsgType.StateChangeSubmission,
 			new StateChangeMessage {

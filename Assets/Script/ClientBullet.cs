@@ -7,15 +7,11 @@ public class ClientBullet : MonoBehaviour {
     public GameController GameController;
     public StateManager StateManager;
 
-    float lerpStartTime;
-    float lerpTime = 0.1f;
-    Vector2 lastPosition = new Vector2();
-    Vector2 targetPosition = new Vector2();
+    Interpolator Interpolator = new Interpolator();
 
 	// Use this for initialization
 	void Start () {
         
-		
 	}
 	
 	// Update is called once per frame
@@ -24,26 +20,12 @@ public class ClientBullet : MonoBehaviour {
             var globalState = StateManager.GetApproxState();
             if (!globalState.BulletStates.ContainsKey(State.BulletID)) {
                 GameController.BulletDict.Remove(State.BulletID);
-             //   Debug.Log("Destroy");
                 Destroy(this.gameObject);
-            }
-            else
-            {
+            } else {
                 // update position from state
                 var bulletPos = globalState.BulletStates[State.BulletID].Position;
-             //   Debug.Log("bullet: " + bulletPos);
-                transform.position = bulletPos;
-                if (bulletPos != targetPosition)
-                {
-                    lastPosition = transform.position;
-                    targetPosition = bulletPos;
-                    lerpStartTime = Time.time;
-                }
-                this.transform.position = Vector2.Lerp(
-                    lastPosition, State.Position, (Time.time - lerpStartTime) / lerpTime);
-            //    Debug.Log("Client Bullet: " + globalState.BulletStates[State.BulletID].Position);
+                transform.position = Interpolator.GetPosition(transform.position, bulletPos);
             }
-
         }
         if (State == null) return;
     }
