@@ -12,11 +12,12 @@ public class ServerLogic : MonoBehaviour {
 	public void Initialise(int numPlayers) {
 		var localStates = new Dictionary<int, LocalState>();
 		for (var i = 0; i < numPlayers; i++) {
-			localStates[i] = new LocalState {
-				PlayerState = new PlayerState {
-					Position = new Vector2(0, 0),
-					Orientation = Direction.Up,
-					HP = Constants.PlayerHP
+            localStates[i] = new LocalState {
+                PlayerState = new PlayerState {
+                    Position = new Vector2(0, 0),
+                    Orientation = Direction.Up,
+                    HP = Constants.PlayerHP,
+                    PlayerID = i
 				}
 			};
 			var player = Instantiate(PlayerPrefab, new Vector3(), new Quaternion());
