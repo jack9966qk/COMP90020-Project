@@ -17,7 +17,8 @@ public class ServerLogic : MonoBehaviour {
                     Position = new Vector2(0, 0),
                     Orientation = Direction.Up,
                     HP = Constants.PlayerHP,
-                    PlayerID = i
+                    PlayerID = i,
+                    Stationary = true
 				}
 			};
 			var player = Instantiate(PlayerPrefab, new Vector3(), new Quaternion());
@@ -48,6 +49,14 @@ public class ServerLogic : MonoBehaviour {
 			// update player position
 			var playerState = GlobalState.LocalStates[playerId].PlayerState;
 			if (change.NewPosition.HasValue) {
+                //------------------------------------------------------This Isn't Printing---------------------------------------------------
+                Debug.Log(playerId + ": old: " + playerState.Position + ", new: " + change.NewPosition.Value);
+                if (change.NewPosition.Value.Equals(playerState.Position)) {
+                    playerState.Stationary = true;
+                }
+                else {
+                    playerState.Stationary = false;
+                }
 				playerState.Position = change.NewPosition.Value;
 			}
 			if (change.NewOrientation.HasValue) {

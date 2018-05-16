@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 public class PlayerState : MessageBase {
 	public Vector2 Position;
 	public Direction Orientation;
+    public Boolean Stationary;
 	public float HP;
     public int PlayerID;
 
