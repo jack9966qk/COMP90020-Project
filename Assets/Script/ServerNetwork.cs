@@ -55,14 +55,18 @@ public class ServerNetwork : MonoBehaviour {
 
 	void broadcastGlobalState() {
 		serverTime += 1;
+		StartCoroutine(sendGlobalState());		
+	}
 
-		foreach (var connId in connToPlayerId.Keys) {
+	IEnumerator sendGlobalState() {
+		yield return new WaitForSeconds(Constants.ArtificialLatency);
+        foreach (var connId in connToPlayerId.Keys) {
 			var playerId = connToPlayerId[connId];
 			NetworkServer.SendToClient(
 				connId,
 				NetworkMsgType.NewGlobalState,
 				new GlobalStateMessage {
-					LogicTime = new Vector2(serverTime, clientTimes[playerId]),
+					LogicTime = new Vector2(clientTimes[playerId], serverTime),
 					GlobalState = ServerLogic.GlobalState
 				}
 			);
@@ -106,7 +110,7 @@ public class ServerNetwork : MonoBehaviour {
 		numPlayers += 1;
 
 		// start the game if all players connected
-		if (numPlayers >= 1) {
+		if (numPlayers >= 2) {
 			startGame();
 		}
 	}

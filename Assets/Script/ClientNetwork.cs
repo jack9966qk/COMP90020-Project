@@ -32,7 +32,7 @@ public class ClientNetwork : MonoBehaviour {
 	}
 
 	public void Start() {
-		StartClient("10.12.13.60", Constants.Port);	
+		StartClient("127.0.0.1", Constants.Port);	
 	}
 
 	static void OnClientConnect(NetworkMessage msg) {
