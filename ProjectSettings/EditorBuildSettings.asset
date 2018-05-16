@@ -11,3 +11,4 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Client.unity
     guid: 7835a6ef783d94d7cb760f20b265f3ed
+  m_configObjects: {}

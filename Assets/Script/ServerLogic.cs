@@ -48,17 +48,16 @@ public class ServerLogic : MonoBehaviour {
 			}
 			// update player position
 			var playerState = GlobalState.LocalStates[playerId].PlayerState;
-			if (change.NewPosition.HasValue) {
-                //------------------------------------------------------This Isn't Printing---------------------------------------------------
-                Debug.Log(playerId + ": old: " + playerState.Position + ", new: " + change.NewPosition.Value);
-                if (change.NewPosition.Value.Equals(playerState.Position)) {
-                    playerState.Stationary = true;
-                }
-                else {
+
+           // Debug.Log(playerId + ": old: " + playerState.Position + ", new: " + change.NewPosition.Value);
+            if (change.NewPosition.HasValue) {
                     playerState.Stationary = false;
-                }
 				playerState.Position = change.NewPosition.Value;
 			}
+            else {
+                Debug.Log("here");
+                playerState.Stationary = true;
+            }
 			if (change.NewOrientation.HasValue) {
 				playerState.Orientation = change.NewOrientation.Value;
 			}

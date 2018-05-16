@@ -60,7 +60,10 @@ public class ServerNetwork : MonoBehaviour {
 
 	IEnumerator sendGlobalState() {
 		yield return new WaitForSeconds(Constants.ArtificialLatency);
-		foreach (var connId in connToPlayerId.Keys) {
+        foreach (KeyValuePair<int, LocalState> playerState in ServerLogic.GlobalState.LocalStates) {
+            Debug.Log("stationary? network= " + playerState.Value.PlayerState.Stationary);
+        }
+        foreach (var connId in connToPlayerId.Keys) {
 			var playerId = connToPlayerId[connId];
 			NetworkServer.SendToClient(
 				connId,

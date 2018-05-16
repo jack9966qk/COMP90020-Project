@@ -70,7 +70,7 @@ public class StateManager : MonoBehaviour {
                 if (PID == null) break;
                 if (pair.Key == PID) continue;
                 var playerState = pair.Value.PlayerState;
-                Debug.Log("Stationary? " + playerState.Stationary);
+               // Debug.Log("Stationary? " + playerState.Stationary);
                 if (playerState.Stationary != true) {
                     // player movement
                     float distance = Time.deltaTime * Constants.PlayerSpeed;

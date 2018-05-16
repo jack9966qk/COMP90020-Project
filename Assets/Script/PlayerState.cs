@@ -47,12 +47,14 @@ public class PlayerState : MessageBase {
 		writer.Write(Position);
 		DirectionIO.writeDirectionToBuffer(Orientation, writer);
 		writer.Write(HP);
+        writer.Write(Stationary);
     }
 
     public override void Deserialize(NetworkReader reader) {
 		Position = reader.ReadVector2();
 		Orientation = DirectionIO.readDirectionFromBuffer(reader);
 		HP = reader.ReadSingle();
+        Stationary = reader.ReadBoolean();
     }
 }
 
