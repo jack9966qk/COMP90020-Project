@@ -12,10 +12,11 @@ public class ServerLogic : MonoBehaviour {
 	public void Initialise(int numPlayers) {
 		var localStates = new Dictionary<int, LocalState>();
 		for (var i = 0; i < numPlayers; i++) {
-			localStates[i] = new LocalState {
-				PlayerState = new PlayerState {
-					Position = new Vector2(0, 0),
-					Orientation = Direction.Up,
+            localStates[i] = new LocalState {
+                PlayerState = new PlayerState {
+                    Position = new Vector2(0, 0),
+                    Orientation = Direction.Up,
+                    Stationary = true,
 					HP = Constants.PlayerHP
 				}
 			};
@@ -47,6 +48,14 @@ public class ServerLogic : MonoBehaviour {
 			// update player position
 			var playerState = GlobalState.LocalStates[playerId].PlayerState;
 			if (change.NewPosition.HasValue) {
+                //------------------------------------------------------This Isn't Printing---------------------------------------------------
+                Debug.Log(playerId + ": old: " + playerState.Position + ", new: " + change.NewPosition.Value);
+                if (change.NewPosition.Value.Equals(playerState.Position)) {
+                    playerState.Stationary = true;
+                }
+                else {
+                    playerState.Stationary = false;
+                }
 				playerState.Position = change.NewPosition.Value;
 			}
 			if (change.NewOrientation.HasValue) {

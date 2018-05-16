@@ -65,29 +65,33 @@ public class StateManager : MonoBehaviour {
                 }
             }
             
+            //P=P0+(V0*Delta(t)) P is current position, P0 is last known position, V0 is player Speed or if player isn't moving 0, delta(t) is the change in physical time
             foreach (var pair in currentState.LocalStates) {
                 if (PID == null) break;
                 if (pair.Key == PID) continue;
                 var playerState = pair.Value.PlayerState;
-                // player movement
-                float distance = Time.deltaTime * Constants.PlayerSpeed;
-                float x = playerState.Position.x;
-                float y = playerState.Position.y;
-                switch (playerState.Orientation) {
-                    case Direction.Up:
-                        playerState.Position = new Vector2(x, y + distance);
-                        break;
-                    case Direction.Down:
-                        playerState.Position = new Vector2(x, y - distance);
-                        break;
-                    case Direction.Left:
-                        playerState.Position = new Vector2(x - distance, y);
-                        break;
-                    case Direction.Right:
-                        playerState.Position = new Vector2(x + distance, y);
-                        break;
-                    default:
-                        break;
+                Debug.Log("Stationary? " + playerState.Stationary);
+                if (playerState.Stationary != true) {
+                    // player movement
+                    float distance = Time.deltaTime * Constants.PlayerSpeed;
+                    float x = playerState.Position.x;
+                    float y = playerState.Position.y;
+                    switch (playerState.Orientation) {
+                        case Direction.Up:
+                            playerState.Position = new Vector2(x, y + distance);
+                            break;
+                        case Direction.Down:
+                            playerState.Position = new Vector2(x, y - distance);
+                            break;
+                        case Direction.Left:
+                            playerState.Position = new Vector2(x - distance, y);
+                            break;
+                        case Direction.Right:
+                            playerState.Position = new Vector2(x + distance, y);
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 GlobalState.LocalStates[pair.Key].PlayerState = playerState;
                 //Debug.Log(GlobalState.LocalStates[pair.Key].PlayerState.Position);
@@ -134,7 +138,9 @@ public class StateManager : MonoBehaviour {
             TimeStamp = logictime,
             Update = stateChange
         });
-        //send the state change to server
+
+        //send the state change to server and attach current timestamp
+
         ClientNetwork.UpdateStateChange(stateChange,logictime);
 	}
 
@@ -144,12 +150,13 @@ public class StateManager : MonoBehaviour {
         //var newBullets = serverState.BulletStates;
 
         //remove old items from updateHistory 
-        while (updateHistory.Count > 0 && updateHistory.Peek().TimeStamp.x < logictime.x) {
+        while (updateHistory.Count > 0 && updateHistory.Peek().TimeStamp.x <= logictime.x) {
             updateHistory.Dequeue();
         }
-        if(PID == null) {
-            PID = ClientNetwork.getPID();
+        if(updateHistory.Count > 0) {
+           //Dead Reckoning setup
         }
+
         //use current position to calculate desired position for each player
        /* if (updateHistory.Count > 0) {
             BufferItem currentUpdate = updateHistory.Dequeue();
@@ -182,6 +189,8 @@ public class StateManager : MonoBehaviour {
                  }
              }
         }*/
+
+
         //rebuild State
         //Debug.Log("future predictions" + updateHistory.Count);
         foreach (BufferItem update in updateHistory) {
