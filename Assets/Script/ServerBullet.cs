@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour {
+public class ServerBullet : MonoBehaviour {
     public BulletState State = new BulletState();
     public ServerLogic ServerLogic;
-    int frame;
-	// Use this for initialization
-	void Start () {
-	}
 	
 	// Update is called once per frame
 	void Update () {
-        
         if (ServerLogic != null) {
             var globalState = ServerLogic.GlobalState;
             if (!globalState.BulletStates.ContainsKey(State.BulletID)) {
@@ -27,29 +22,10 @@ public class Bullet : MonoBehaviour {
         if (State == null) return;
     }
 
-    public void Move()
-    {
+    public void Move() {
         float distance = Time.deltaTime * Constants.BulletSpeed;
-        float x = this.State.Position.x;
-        float y = this.State.Position.y;
-        
-        switch (State.Direction)
-        {
-            case Direction.Up:
-                this.transform.position = new Vector2(x, y + distance);
-                break;
-            case Direction.Down:
-                this.transform.position = new Vector2(x, y - distance);
-                break;
-            case Direction.Left:
-                this.transform.position = new Vector2(x - distance, y);
-                break;
-            case Direction.Right:
-                this.transform.position = new Vector2(x + distance, y);
-                break;
-            default:
-                break;
-        }
+        transform.position = DirectionUtil.move(
+            State.Position, State.Direction, distance);
         
         ServerLogic
             .GlobalState
@@ -69,7 +45,7 @@ public class Bullet : MonoBehaviour {
             int playerID = collision.gameObject.GetComponent<Player>().State.PlayerID;
             string bulletID = State.BulletID;
             ServerLogic.OnCollision(bulletID, playerID);
-         }
+        }
     }
 
 }

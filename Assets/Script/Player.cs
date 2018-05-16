@@ -54,11 +54,9 @@ public class Player : MonoBehaviour {
                 Destroy(this.gameObject);
                 return;
             }
-            
             updateFromState(true);
         } else {
             // is server side player
-            // update position
             updateFromState(false);
         }
 

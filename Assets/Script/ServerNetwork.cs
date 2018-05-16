@@ -59,10 +59,9 @@ public class ServerNetwork : MonoBehaviour {
 	}
 
 	IEnumerator sendGlobalState() {
+		// artificial network delay
 		yield return new WaitForSeconds(Constants.ArtificialLatency);
-        foreach (KeyValuePair<int, LocalState> playerState in ServerLogic.GlobalState.LocalStates) {
-            Debug.Log("stationary? network= " + playerState.Value.PlayerState.Stationary);
-        }
+		// send global state to each client
         foreach (var connId in connToPlayerId.Keys) {
 			var playerId = connToPlayerId[connId];
 			NetworkServer.SendToClient(
@@ -82,21 +81,24 @@ public class ServerNetwork : MonoBehaviour {
 		var change = stateChangeMsg.StateChange;
 		var connId = msg.conn.connectionId;
 		var playerId = connToPlayerId[connId];
+
+		// store state change for player
 		if (!stateChanges.ContainsKey(playerId)) {
 			stateChanges[playerId] = change;
 		} else {
 			stateChanges[playerId].merge(change);
 		}
+
+		// update logic time
 		var time = stateChangeMsg.LogicTime;
 		clientTimes[playerId] = (int)time.x;
 
 		submitted.Add(connToPlayerId[msg.conn.connectionId]);
 
-		// check if all clients submitteds
-        // TODO stretch goal - fix this ---------------
+		// broadcast global state if received update from all players
 		if (submitted.Count >= numPlayers) {
 			submitted.Clear();
-			// Call serverlogic to update global game state
+			// call serverlogic to update global game state
 			ServerLogic.ApplyStateChange(stateChanges);
 			stateChanges.Clear();
 			Debug.Log("Send new global state");
@@ -113,7 +115,7 @@ public class ServerNetwork : MonoBehaviour {
 		numPlayers += 1;
 
 		// start the game if all players connected
-		if (numPlayers >= 2) {
+		if (numPlayers >= Constants.NumPlayers) {
 			startGame();
 		}
 	}

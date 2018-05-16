@@ -7,9 +7,10 @@ public class ServerLogic : MonoBehaviour {
 	public GameObject BulletPrefab;
 
 	Dictionary<int, Player> players = new Dictionary<int, Player>();
-	Dictionary<string, Bullet> bullets = new Dictionary<string, Bullet>();
+	Dictionary<string, ServerBullet> bullets = new Dictionary<string, ServerBullet>();
 
 	public void Initialise(int numPlayers) {
+		// create initial global state and game objects
 		var localStates = new Dictionary<int, LocalState>();
 		for (var i = 0; i < numPlayers; i++) {
             localStates[i] = new LocalState {
@@ -39,9 +40,9 @@ public class ServerLogic : MonoBehaviour {
 				if (!bullets.ContainsKey(bulletState.BulletID)) {
 					// Init the bullets
 					var bullet = Instantiate(BulletPrefab, bulletState.Position, new Quaternion());
-					bullet.GetComponent<Bullet>().State = bulletState;
-					bullet.GetComponent<Bullet>().ServerLogic = this;
-					bullets[bulletState.BulletID] = bullet.GetComponent<Bullet>();
+					bullet.GetComponent<ServerBullet>().State = bulletState;
+					bullet.GetComponent<ServerBullet>().ServerLogic = this;
+					bullets[bulletState.BulletID] = bullet.GetComponent<ServerBullet>();
 					GlobalState.BulletStates[bulletState.BulletID] = bulletState;
 				}
 			}
@@ -50,7 +51,7 @@ public class ServerLogic : MonoBehaviour {
 
            
             if (change.NewPosition.HasValue) {
-                    playerState.Stationary = false;
+				playerState.Stationary = false;
 				playerState.Position = change.NewPosition.Value;
 			} else {
                 playerState.Stationary = true;

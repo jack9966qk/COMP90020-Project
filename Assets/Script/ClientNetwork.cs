@@ -48,6 +48,8 @@ public class ClientNetwork : MonoBehaviour {
 	}
 
 	public static void UpdateStateChange(StateChange stateChange, Vector2 logicTime) {
+		// merge state change with existing ones,
+		// to be submitted together to the server
 		changeToSend.merge(stateChange);
 		clientLogicTime = logicTime;
 	}
@@ -57,8 +59,7 @@ public class ClientNetwork : MonoBehaviour {
 		LocalPlayerId = msg.ReadMessage<IntegerMessage>().value;
 	}
 
-    public static int? getPID()
-    {
+    public static int? getPID() {
         return LocalPlayerId;
     }
 
@@ -69,6 +70,7 @@ public class ClientNetwork : MonoBehaviour {
 			globalStateMsg.GlobalState,
 			globalStateMsg.LogicTime);
 		
+		// send state change since last submission
 		client.Send(
 			NetworkMsgType.StateChangeSubmission,
 			new StateChangeMessage {

@@ -20,9 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4133760359716284}
   - component: {fileID: 212822471290913192}
-  - component: {fileID: 114507920103188750}
   - component: {fileID: 60451331818929438}
   - component: {fileID: 50101666015499444}
+  - component: {fileID: 114033443936325514}
   m_Layer: 0
   m_Name: ServerBullet
   m_TagString: Bullet
@@ -215,7 +215,7 @@ PolygonCollider2D:
       - {x: -0.3535534, y: 0.35355335}
       - {x: -0.3357795, y: 0.37047553}
       - {x: -0.31719667, y: 0.38650525}
---- !u!114 &114507920103188750
+--- !u!114 &114033443936325514
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1666898430751710}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3999280f4279c4a4d9445dd12c6682e9, type: 3}
+  m_Script: {fileID: 11500000, guid: 0245cb84b72e742848c09a4af5992ccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ServerLogic: {fileID: 0}
@@ -240,6 +240,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:

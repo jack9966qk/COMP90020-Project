@@ -1,8 +1,26 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.Networking;
 
 public enum Direction {
 	Up, Down, Left, Right
+}
+
+public class DirectionUtil {
+	public static Vector2 move(Vector2 from, Direction direction, float distance) {
+		float x = from.x;
+		float y = from.y;
+		switch (direction) {
+			case Direction.Up:
+				return new Vector2(x, y + distance);
+			case Direction.Down:
+				return new Vector2(x, y - distance);
+			case Direction.Left:
+				return new Vector2(x - distance, y);
+			default:
+				return new Vector2(x + distance, y);
+		}
+	}
 }
 
 public class DirectionIO {
