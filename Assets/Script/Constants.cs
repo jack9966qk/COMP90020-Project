@@ -4,5 +4,5 @@ public class Constants {
     public const int BulletDamage = 1;
     public const float PlayerSpeed = 4.5f;
     public const float BulletSpeed = 6.0f;
-    public const float ArtificialLatency = 2f;
+    public const float ArtificialLatency =0f;
 }

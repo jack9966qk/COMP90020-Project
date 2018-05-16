@@ -27,13 +27,13 @@ public class StateManager : MonoBehaviour {
     private static int bulletIdCounter = 0;
 
 	public GlobalState GetApproxState() {
-       // Debug.Log("GetApproxState");
-      //  Debug.Log(GlobalState.LocalStates.Count);
-
-        foreach (var pair in GlobalState.LocalStates) {
+        // Debug.Log("GetApproxState");
+        //  Debug.Log(GlobalState.LocalStates.Count);
+  
+      /*  foreach (var pair in GlobalState.LocalStates) {
             if (pair.Key == PID) continue;
            // Debug.Log(GlobalState.LocalStates[pair.Key].PlayerState.Position);
-        }
+        }*/
         return GlobalState;
 	}
 
@@ -151,7 +151,7 @@ public class StateManager : MonoBehaviour {
             PID = ClientNetwork.getPID();
         }
         //use current position to calculate desired position for each player
-        if (updateHistory.Count > 0) {
+       /* if (updateHistory.Count > 0) {
             BufferItem currentUpdate = updateHistory.Dequeue();
             // Vector2 oldPos = currentUpdate.Update.NewPosition.Value;
             // Vector2 currentPos = GlobalState.LocalStates[PID.Value].PlayerState.Position;
@@ -180,8 +180,8 @@ public class StateManager : MonoBehaviour {
                          break;
 
                  }
-             }*/
-        }
+             }
+        }*/
         //rebuild State
         //Debug.Log("future predictions" + updateHistory.Count);
         foreach (BufferItem update in updateHistory) {
